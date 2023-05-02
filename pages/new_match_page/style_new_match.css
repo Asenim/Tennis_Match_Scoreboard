@@ -1,0 +1,77 @@
+.new_match {
+    text-align: center;
+    color: darkred;
+    background-color: cornflowerblue;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    height: 100px;
+}
+.name_players {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 80px;
+    width: 60%;
+    height: 10px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+div {
+    min-width: 300px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text {
+    text-align: center;
+    font-size: 30px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+label {
+    font-size: 25px;
+}
+
+.button2 {
+    min-width: 300px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: red;
+    color: darkgreen;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.button2:hover {
+    color: navy;
+    background: yellow;
+    -webkit-transition: all .3s linear;
+    -moz-transition: all .1s linear;
+}
+
+.button2:active{
+    color: #000;
+    background-color: green;
+}
+
+body {
+    background-color: powderblue;
+}

@@ -1,0 +1,41 @@
+.welcome {
+    text-align: center;
+    color: aqua;
+    background-color: rebeccapurple;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    height: 100px;
+}
+
+.button {
+    min-width: 300px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: cyan;
+    color: darkslateblue;
+}
+
+.button:hover {
+    color: antiquewhite;
+    background: green;
+    -webkit-transition: all .3s linear;
+    -moz-transition: all .3s linear;
+}
+
+.button:active{
+    color: #000;
+    background-color: darkred;
+}
+
+body {
+    background-color: cadetblue;
+}
