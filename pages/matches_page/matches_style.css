@@ -1,0 +1,92 @@
+.main_description {
+    text-align: center;
+    color: black;
+    background-color: aqua;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    height: 100%;
+}
+
+.description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 30px;
+}
+
+.search {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text_search {
+    text-align: center;
+    font-size: 25px;
+    margin-right: 20px;
+    margin-left: 20px;
+    width: 40%;
+}
+
+.button_search {
+    font-size: 25px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.button_search:hover {
+    color: black;
+    background: aqua;
+    -webkit-transition: all .3s linear;
+    -moz-transition: all .1s linear;
+}
+
+.button_search:active {
+    color: black;
+    background-color: green;
+}
+
+.python_window {
+    background-color: aqua;
+}
+
+.pages_list {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    width: 99%;
+    top: 90%;
+    height: 50px;
+
+}
+
+.pages_list a{
+    font-size: 20px;
+    padding: 8px 16px;
+}
+
+.pages_list a:hover {
+    color: white;
+    background: purple;
+    -webkit-transition: all .3s linear;
+    -moz-transition: all .1s linear;
+}
+
+.pages_list a:active {
+    color: wheat;
+    background-color: green;
+    -webkit-transition: all .12ms linear;
+    -moz-transition: all .12ms linear;
+}
+
+body {
+    background-color: cornflowerblue;
+}
