@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <link rel="stylesheet" href="matches_style.css">
-<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
-<script defer src="https://pyscript.net/latest/pyscript.js"></script>
 <head>
     <meta charset="UTF-8">
     <title> Matches page </title>
@@ -26,7 +24,11 @@
     </form>
 
     <form class="python_window">
-        <py-script class="python_window"> print(1+2) </py-script>
+        <ul>
+            {% for item in my_object %}
+                <li> {{item}}} </li>
+            {% endfor %}
+        </ul>
     </form>>
 
     <div class="pages_list">
