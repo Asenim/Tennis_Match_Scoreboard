@@ -1,6 +1,6 @@
 """Файл с точкой входа в программу"""
 import wsgiref.util
-from src import jinja2_sample
+from src.samples import jinja2_sample
 
 
 def application(env, start_response):
@@ -26,7 +26,8 @@ def application(env, start_response):
 
     if url == 'matches':
         start_response('200 OK', [('Content-Type', 'text/html')])
-        # list item будет убраться
+        # list item будет убраться, Тут будет информация из БД,
+        # которая будет передаваться первым аргументом в мой генератор шаблона
         list_item = [1, 2, 3, 4, 5, 6, 7, 8]
         result = jinja2_sample.generate_sample(list_item, '/matches_page/page_matches.html')
         return [result.encode()]
