@@ -31,12 +31,6 @@ class Players(Base):
 
     ID = Column(Integer(), primary_key=True, autoincrement=True)
     Name = Column(VARCHAR(255), nullable=False, index=True)
-    # matches = relationship(
-    #     "Matches",
-    #     back_populates="players",
-    #     cascade="all, delete",
-    #     passive_deletes=True
-    # )
 
 
 class Matches(Base):

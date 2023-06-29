@@ -1,9 +1,23 @@
 from src.data_base_directory.db_schema_conf import *
-import logging
+# import json
+# import logging
+
+
+class InteractionTable:
+    @staticmethod
+    def output_console_list_result(list_output):
+        """
+        Метод позволяет выводить в консоль информацию
+        о всех выборках.
+        :param list_output: параметр принимает в себя
+        список с результатами выборки.
+        """
+        for item in list_output:
+            print(*item)
 
 
 # players
-class InteractionTablePlayers:
+class InteractionTablePlayers(InteractionTable):
     @staticmethod
     def insert_one_player(name):
         """
@@ -35,14 +49,22 @@ class InteractionTablePlayers:
         try:
             if id is not None:
                 __player = session.query(Players).filter(Players.ID == id).one()
-                session.delete(__player)
-                session.commit()
-                print(f"Data {__player} deleted!")
+
+                try:
+                    session.delete(__player)
+                    session.commit()
+                    print(f"Data {__player} deleted!")
+                except ValueError:
+                    print('There are no players with this ID in the players table')
             else:
                 __player = session.query(Players).filter(Players.Name == name).one()
-                session.delete(__player)
-                session.commit()
-                print(f"Data {__player} deleted!")
+
+                try:
+                    session.delete(__player)
+                    session.commit()
+                    print(f"Data {__player} deleted!")
+                except ValueError:
+                    print('There are no players with this Name in the players table')
 
         except ConnectionError:
             print("Failed to connect to database")
@@ -51,7 +73,38 @@ class InteractionTablePlayers:
             print("Session closed!")
 
 
-class InteractionTableMatches:
+class InteractionTableMatches(InteractionTable):
+    def select_matches(self, id_p1=None, id_p2=None,
+                       name_p1=None, name_p2=None):
+        """
+        Метод в первую очередь будет выдавать всю
+        информацию из таблицы Matches
+        :param id_p1:
+        :param id_p2:
+        :param name_p1:
+        :param name_p2:
+        :return:
+        """
+        session = Session(bind=engine)
+
+        try:
+            select_all_matches = session.query(Matches).all()
+
+            list_result = []
+            for select in select_all_matches:
+                list_add_in_list_result = [select.players1.Name,
+                                           select.players2.Name,
+                                           select.winners.Name]
+                list_result.append(list_add_in_list_result)
+
+            self.output_console_list_result(list_result)
+
+        except ConnectionError:
+            print("Connecting Error")
+        finally:
+            session.close()
+            print("Session closed!")
+
     @staticmethod
     def insert_matches(p1_id, p2_id, p_win):
         """
@@ -69,10 +122,15 @@ class InteractionTableMatches:
                 Player2=p2_id,
                 Winner=p_win,
             )
-            session.add(__insert_match)
-            print(session.new)
-            session.commit()
-            print("Data added to db")
+
+            try:
+                session.add(__insert_match)
+                print(session.new)
+                session.commit()
+                print("Data added to db")
+            except ValueError:
+                print("There are no players with this ID in the players table")
+
         except ConnectionError:
             print("Failed to connect to database")
         finally:
@@ -89,9 +147,13 @@ class InteractionTableMatches:
         session = Session(bind=engine)
         try:
             __player = session.query(Players).filter(Matches.ID == id_match).one()
-            session.delete(__player)
-            session.commit()
-            print(f"Data {__player} deleted!")
+
+            try:
+                session.delete(__player)
+                session.commit()
+                print(f"Data {__player} deleted!")
+            except ValueError:
+                print("there are no matches with this ID in the matches table")
 
         except ConnectionError:
             print("Failed to connect to database")
@@ -102,11 +164,22 @@ class InteractionTableMatches:
 
 play = InteractionTablePlayers()
 # play.insert_one_player('Alfob')
-# play.insert_one_player('Ziya')
-# play.insert_one_player('Kubla')
+# play.insert_one_player('Alsu')
+# play.insert_one_player('Pasha')
+# play.insert_one_player('Misha')
+# play.insert_one_player('Asta')
+# play.insert_one_player('Lina')
+# play.insert_one_player('Ichigo')
 # play.insert_one_player('Sergey')
 # play.delete_one_player(id=3)
 # play.delete_one_player(name='Ziya')
 
 matches = InteractionTableMatches()
-# matches.insert_matches(3, 4, 4)
+matches.select_matches()
+# matches.insert_matches(4, 5, 4)
+# matches.insert_matches(5, 6, 5)
+# matches.insert_matches(6, 4, 4)
+# matches.insert_matches(4, 7, 4)
+# matches.insert_matches(4, 8, 4)
+# matches.insert_matches(4, 9, 4)
+# matches.insert_matches(4, 10, 4)
