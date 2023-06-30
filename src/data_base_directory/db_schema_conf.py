@@ -41,15 +41,15 @@ class Matches(Base):
     Player2 = Column(Integer(), ForeignKey('Players.ID', ondelete="CASCADE"), nullable=False)
     Winner = Column(Integer(), ForeignKey('Players.ID', ondelete="CASCADE"), nullable=False)
 
-    players1 = relationship(
+    player1 = relationship(
         "Players",
         foreign_keys=[Player1],
     )
-    players2 = relationship(
+    player2 = relationship(
         "Players",
         foreign_keys=[Player2],
     )
-    winners = relationship(
+    winner = relationship(
         "Players",
         foreign_keys=[Winner],
     )
