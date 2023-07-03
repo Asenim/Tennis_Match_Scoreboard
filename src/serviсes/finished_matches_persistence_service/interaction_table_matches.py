@@ -1,6 +1,7 @@
-from src.finished_matches_persistence_service.interaction_table_ABS \
+from src.serviсes.finished_matches_persistence_service.interaction_table_ABS \
     import InteractionTable
 from src.data_base_directory.db_schema_conf import *
+# import json
 
 
 class InteractionTableMatches(InteractionTable):
@@ -17,22 +18,33 @@ class InteractionTableMatches(InteractionTable):
         session = Session(bind=engine)
 
         try:
-            if name_p1 is not None and name_p2 is not None:
-                player1_id = session.query(Players).filter(Players.Name == name_p1).one()
-                player2_id = session.query(Players).filter(Players.Name == name_p2).one()
+            select_all_matches = session.query(Matches).all()
 
-                select_match = session.query(Matches).filter(
-                    Matches.Player1 == player1_id.ID,
-                    Matches.Player2 == player2_id.ID
-                )
-                list_result = self.result_matches(select_match)
-                self.output_console_list_result(list_result)
+            list_result = self.result_matches(select_all_matches)
+
+            if name_p1 is not None and name_p2 is not None:
+                sorted_list = []
+
+                for match_result in list_result:
+                    if name_p1 == match_result[0] and name_p2 == match_result[1]:
+                        sorted_list.append(match_result)
+
+                self.output_console_list_result("sorted list", sorted_list)
+                return sorted_list
+
+            elif name_p1 is not None:
+                sorted_list = []
+
+                for match_result in list_result:
+                    if name_p1 == match_result[0] or name_p1 == match_result[1]:
+                        sorted_list.append(match_result)
+
+                self.output_console_list_result("sorted list", sorted_list)
+                return sorted_list
 
             else:
-                select_all_matches = session.query(Matches).all()
-
-                list_result = self.result_matches(select_all_matches)
-                self.output_console_list_result(list_result)
+                self.output_console_list_result("list result", list_result)
+                return list_result
 
         except ConnectionError:
             print("Connecting Error")
@@ -116,10 +128,11 @@ class InteractionTableMatches(InteractionTable):
         return list_result
 
 
-matches = InteractionTableMatches()
-matches.select_matches()
-print('----')
-matches.select_matches(name_p1='Sergey', name_p2='Alfob')
+# matches = InteractionTableMatches()
+# matches.select_matches()
+# print('----')
+# matches.select_matches(name_p1='Sergey')
+# matches.select_matches(name_p1='Sergey', name_p2='Alfob')
 # matches.insert_matches(4, 5, 4)
 # matches.insert_matches(5, 6, 5)
 # matches.insert_matches(6, 4, 4)

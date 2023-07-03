@@ -1,0 +1,2 @@
+from src.serviсes.finished_matches_persistence_service.interaction_table_matches import InteractionTableMatches
+from src.serviсes.finished_matches_persistence_service.interaction_table_players import InteractionTablePlayers

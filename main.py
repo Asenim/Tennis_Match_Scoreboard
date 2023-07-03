@@ -13,14 +13,14 @@ def application(env, start_response):
     # Главная страница
     if url == '':
         start_response('200 OK', [('Content-Type', 'text/html')])
-        with open('/home/alfob/Tennis_ball_scoreboard/pages/main_page/page_main.html', 'r') as index:
+        with open('/home/alfob/Tennis_ball_scoreboard/src/pages/main_page/page_main.html', 'r') as index:
             reading = index.read()
             return [reading.encode()]
 
     # Стили главной страницы
     if url == 'style_main.css':
         start_response('200 OK', [('Content-Type', 'text/css')])
-        with open('/home/alfob/Tennis_ball_scoreboard/pages/main_page/style_main.css', 'r') as index:
+        with open('/home/alfob/Tennis_ball_scoreboard/src/pages/main_page/style_main.css', 'r') as index:
             reading = index.read()
             return [reading.encode()]
 
@@ -28,12 +28,15 @@ def application(env, start_response):
         start_response('200 OK', [('Content-Type', 'text/html')])
         # list item будет убраться, Тут будет информация из БД,
         # которая будет передаваться первым аргументом в мой генератор шаблона
-        list_item = [1, 2, 3, 4, 5, 6, 7, 8]
-        result = jinja2_sample.generate_sample(list_item, '/matches_page/page_matches.html')
+
+        # list_item = InteractionTableMatches()
+        # results = list_item.select_matches()
+        results = [[1, 2], [2, 3], [3, 4]]
+        result = jinja2_sample.generate_sample(results, '/matches_page/page_matches.html')
         return [result.encode()]
 
     if url == 'matches_style.css':
         start_response('200 OK', [('Content-Type', 'text/css')])
-        with open('/home/alfob/Tennis_ball_scoreboard/pages/matches_page/matches_style.css', 'r') as matches:
+        with open('/home/alfob/Tennis_ball_scoreboard/src/pages/matches_page/matches_style.css', 'r') as matches:
             reading = matches.read()
             return [reading.encode()]

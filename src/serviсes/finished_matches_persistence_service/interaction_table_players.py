@@ -1,4 +1,4 @@
-from src.finished_matches_persistence_service.interaction_table_ABS \
+from src.serviсes.finished_matches_persistence_service.interaction_table_ABS \
     import InteractionTable
 from src.data_base_directory.db_schema_conf import *
 
