@@ -1,6 +1,6 @@
 class InteractionTable:
     @staticmethod
-    def output_console_list_result(output_list_name, list_output):
+    def output_console_list_result(list_output, output_list_name=None):
         """
         Метод позволяет выводить в консоль информацию
         о всех выборках.

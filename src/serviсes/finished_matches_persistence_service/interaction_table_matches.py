@@ -18,32 +18,44 @@ class InteractionTableMatches(InteractionTable):
         session = Session(bind=engine)
 
         try:
-            select_all_matches = session.query(Matches).all()
+            if name_p1 is not None:
+                # Получаем объект игрока из базы данных.
+                # Получаем две записи из базы данных фильтруя их по СТОЛБЦАМ.
+                player_object = session.query(Players).filter(Players.Name == name_p1).one()
+                select_target_matches_column_1 = session.query(Matches).filter(Matches.Player1 == player_object.ID)
+                select_target_matches_column_2 = session.query(Matches).filter(Matches.Player2 == player_object.ID)
 
-            list_result = self.result_matches(select_all_matches)
+                # Объединяем записи для корректного отображения.
+                union_result = select_target_matches_column_1.union_all(select_target_matches_column_2)
 
-            if name_p1 is not None and name_p2 is not None:
-                sorted_list = []
+                # Выполняем запрос result = session.execute(union_result).all() -
+                # И формируем список с корректным результатом
+                list_result = self.result_matches(union_result)
 
-                for match_result in list_result:
-                    if name_p1 == match_result[0] and name_p2 == match_result[1]:
-                        sorted_list.append(match_result)
+                # Выводим в консоль и возвращаем корректный список
+                self.output_console_list_result(list_result)
+                return list_result
 
-                self.output_console_list_result("sorted list", sorted_list)
-                return sorted_list
+            elif name_p1 is not None and name_p2 is not None:
+                # Получаем два объекта игрока
+                player_object_1 = session.query(Players).filter(Players.Name == name_p1).one()
+                player_object_2 = session.query(Players).filter(Players.Name == name_p2).one()
 
-            elif name_p1 is not None:
-                sorted_list = []
+                # Делаем выборку фильтруя по обоим столбцам и игрокам
+                select_match = session.query(Matches).filter(
+                    Matches.Player1 == player_object_1.ID,
+                    Matches.Player2 == player_object_2.ID
+                )
 
-                for match_result in list_result:
-                    if name_p1 == match_result[0] or name_p1 == match_result[1]:
-                        sorted_list.append(match_result)
-
-                self.output_console_list_result("sorted list", sorted_list)
-                return sorted_list
+                list_result = self.result_matches(select_match)
+                self.output_console_list_result(list_result)
+                return list_result
 
             else:
-                self.output_console_list_result("list result", list_result)
+                select_all_matches = session.query(Matches).all()
+                list_result = self.result_matches(select_all_matches)
+                self.output_console_list_result(list_result)
+
                 return list_result
 
         except ConnectionError:
@@ -104,6 +116,7 @@ class InteractionTableMatches(InteractionTable):
 
         except ConnectionError:
             print("Failed to connect to database")
+
         finally:
             session.close()
             print("Session closed!")
@@ -128,15 +141,17 @@ class InteractionTableMatches(InteractionTable):
         return list_result
 
 
-# matches = InteractionTableMatches()
-# matches.select_matches()
-# print('----')
-# matches.select_matches(name_p1='Sergey')
-# matches.select_matches(name_p1='Sergey', name_p2='Alfob')
-# matches.insert_matches(4, 5, 4)
-# matches.insert_matches(5, 6, 5)
-# matches.insert_matches(6, 4, 4)
-# matches.insert_matches(4, 7, 4)
-# matches.insert_matches(4, 8, 4)
-# matches.insert_matches(4, 9, 4)
-# matches.insert_matches(4, 10, 4)
+if "__main__" == __name__:
+    matches = InteractionTableMatches()
+    print(matches.select_matches(name_p1='Alfob'))
+    print('----')
+    print(matches.select_matches())
+    # matches.select_matches(name_p1='Sergey')
+    # matches.select_matches(name_p1='Sergey', name_p2='Alfob')
+    # matches.insert_matches(4, 5, 4)
+    # matches.insert_matches(5, 6, 5)
+    # matches.insert_matches(6, 4, 4)
+    # matches.insert_matches(4, 7, 4)
+    # matches.insert_matches(4, 8, 4)
+    # matches.insert_matches(4, 9, 4)
+    # matches.insert_matches(4, 10, 4)
