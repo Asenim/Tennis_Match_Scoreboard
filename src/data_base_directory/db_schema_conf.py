@@ -26,30 +26,30 @@ Base = declarative_base()
 # ############################### #
 
 
-class Players(Base):
-    __tablename__ = "Players"
+class Player(Base):
+    __tablename__ = "Player"
 
     ID = Column(Integer(), primary_key=True, autoincrement=True)
-    Name = Column(VARCHAR(255), nullable=False, index=True)
+    Name = Column(VARCHAR(255), nullable=False, index=True, unique=True)
 
 
-class Matches(Base):
-    __tablename__ = "Matches"
+class Matche(Base):
+    __tablename__ = "Matche"
 
     ID = Column(Integer(), primary_key=True, autoincrement=True)
-    Player1 = Column(Integer(), ForeignKey('Players.ID', ondelete="CASCADE"), nullable=False)
-    Player2 = Column(Integer(), ForeignKey('Players.ID', ondelete="CASCADE"), nullable=False)
-    Winner = Column(Integer(), ForeignKey('Players.ID', ondelete="CASCADE"), nullable=False)
+    Player1 = Column(Integer(), ForeignKey('Player.ID', ondelete="CASCADE"), nullable=False)
+    Player2 = Column(Integer(), ForeignKey('Player.ID', ondelete="CASCADE"), nullable=False)
+    Winner = Column(Integer(), ForeignKey('Player.ID', ondelete="CASCADE"), nullable=False)
 
     player1 = relationship(
-        "Players",
+        "Player",
         foreign_keys=[Player1],
     )
     player2 = relationship(
-        "Players",
+        "Player",
         foreign_keys=[Player2],
     )
     winner = relationship(
-        "Players",
+        "Player",
         foreign_keys=[Winner],
     )

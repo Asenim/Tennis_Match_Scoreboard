@@ -1,4 +1,4 @@
-class InteractionTable:
+class InteractionTableABS:
     @staticmethod
     def output_console_list_result(list_output, output_list_name=None):
         """
@@ -14,10 +14,3 @@ class InteractionTable:
 
         for item in list_output:
             print(*item)
-
-    # def sort_all_item_in_list(self, sortable_list):
-    #     sorted_list = []
-    #
-    #
-    #
-    #     return sorted_list
