@@ -33,8 +33,8 @@ class Player(Base):
     Name = Column(VARCHAR(255), nullable=False, index=True, unique=True)
 
 
-class Matche(Base):
-    __tablename__ = "Matche"
+class Match(Base):
+    __tablename__ = "Match"
 
     ID = Column(Integer(), primary_key=True, autoincrement=True)
     Player1 = Column(Integer(), ForeignKey('Player.ID', ondelete="CASCADE"), nullable=False)

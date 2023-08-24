@@ -15,7 +15,7 @@ class InsertTableMatches(InteractionTableMatchesABS):
         """
         session = Session(bind=engine)
         try:
-            __insert_match = Matche(
+            __insert_match = Match(
                 Player1=p1_id,
                 Player2=p2_id,
                 Winner=p_win,

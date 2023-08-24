@@ -8,12 +8,12 @@ def generate_sample(displayable_data, displayable_pages):
     :param displayable_data: Объект, который будет отображаться
         на странице.
     :param displayable_pages: Сама отображаемая страница.
-        /home/alfob/Tennis_ball_scoreboard/src/pages
+        /app/src/pages
     :return:
     """
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(
-            '/home/alfob/Tennis_ball_scoreboard/src/pages'
+            '/app/src/pages'
         )
     )
 

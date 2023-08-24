@@ -1,0 +1,13 @@
+alembic==1.11.1
+asgiref==3.6.0
+greenlet==2.0.2
+Jinja2==3.1.2
+Mako==1.2.4
+MarkupSafe==2.1.2
+mysql-connector-python==8.0.33
+protobuf==3.20.3
+python-dotenv==1.0.0
+SQLAlchemy==2.0.15
+sqlparse==0.4.4
+typing_extensions==4.6.2
+tzdata==2023.3

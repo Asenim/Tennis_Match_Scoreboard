@@ -12,7 +12,7 @@ class DeleteTableMatches(InteractionTableMatchesABS):
         """
         session = Session(bind=engine)
         try:
-            __player = session.query(Player).filter(Matche.ID == id_match).one()
+            __player = session.query(Player).filter(Match.ID == id_match).one()
 
             try:
                 session.delete(__player)

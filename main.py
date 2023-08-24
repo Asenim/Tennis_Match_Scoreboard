@@ -13,14 +13,14 @@ def application(env, start_response):
     # Главная страница
     if url == '':
         start_response('200 OK', [('Content-Type', 'text/html')])
-        with open('/home/alfob/Tennis_ball_scoreboard/src/pages/main_page/page_main.html', 'r') as index:
+        with open('/app/src/pages/main_page/page_main.html', 'r') as index:
             reading = index.read()
             return [reading.encode()]
 
     # Стили главной страницы
     if url == 'style_main.css':
         start_response('200 OK', [('Content-Type', 'text/css')])
-        with open('/home/alfob/Tennis_ball_scoreboard/src/pages/main_page/style_main.css', 'r') as index:
+        with open('/app/src/pages/main_page/style_main.css', 'r') as index:
             reading = index.read()
             return [reading.encode()]
 
@@ -37,6 +37,6 @@ def application(env, start_response):
 
     if url == 'matches_style.css':
         start_response('200 OK', [('Content-Type', 'text/css')])
-        with open('/home/alfob/Tennis_ball_scoreboard/src/pages/matches_page/matches_style.css', 'r') as matches:
+        with open('/app/src/pages/matches_page/matches_style.css', 'r') as matches:
             reading = matches.read()
             return [reading.encode()]
