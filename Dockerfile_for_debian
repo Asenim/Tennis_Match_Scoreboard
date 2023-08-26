@@ -1,7 +1,5 @@
-# Команда для билда - docker build . -f Dockerfile_to_clear_linux -t my_linux_to_python
+# Команда для билда - docker build . -f Dockerfile_for_debian -t my_debian_to_python
 # Команда для запуска - docker run -it -p 8080:80 id_images
-# Если вдруг нет доступа к серверу - вероятная причина ip в файле uwsgi_config.ini
-#   вощможно диреватива http не совпадает с ip адресом контейенра
 
 FROM debian
 
