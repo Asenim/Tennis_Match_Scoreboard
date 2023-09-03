@@ -1,6 +1,7 @@
 """Файл с точкой входа в программу"""
 import wsgiref.util
 from src.samples import jinja2_sample
+from src.samples import jinja2_result_page_matches
 
 
 def application(env, start_response):
@@ -31,8 +32,9 @@ def application(env, start_response):
 
         # list_item = InteractionTableMatches()
         # results = list_item.select_matches()
-        results = [[1, 2], [2, 3], [3, 4]]
-        result = jinja2_sample.generate_sample(results, '/matches_page/page_matches.html')
+        # results = [[1, 2], [2, 3], [3, 4]]
+        # result = jinja2_sample.generate_sample(results, '/matches_page/page_matches.html')
+        result = jinja2_result_page_matches.generate_page_matches()
         return [result.encode()]
 
     if url == 'matches_style.css':

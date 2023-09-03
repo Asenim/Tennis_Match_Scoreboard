@@ -1,5 +1,6 @@
 # Команда для билда - docker build . -f Dockerfile_for_ubuntu -t my_ubuntu_to_python
-# Команда для запуска - docker run -it -p 8080:80 id_images
+# Команда для запуска -
+#   docker run --name my_server_ubuntu_container -it -p 8080:80 -v C:\ArhitectFiles\PythonProjects\Tennis_ball_scoreboard:/app my_ubuntu_to_python
 
 FROM ubuntu
 

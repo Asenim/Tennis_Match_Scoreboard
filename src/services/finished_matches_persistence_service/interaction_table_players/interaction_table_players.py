@@ -1,4 +1,4 @@
-from src.serviсes.finished_matches_persistence_service.interaction_table_ABS \
+from src.services.finished_matches_persistence_service.interaction_table_ABS \
     import InteractionTableABS
 from src.data_base_directory.db_schema_conf import *
 
@@ -55,21 +55,3 @@ class InteractionTablePlayers(InteractionTableABS):
         finally:
             session.close()
             print("Session closed!")
-
-
-if "__main__" == __name__:
-    play = InteractionTablePlayers()
-    # print(play.select_one_player('Kiril'))
-    # print(play.select_one_player('Seva'))
-    play.insert_one_player('Alfob')
-    # play.insert_one_player('Alsu')
-    # play.insert_one_player('Pasha')
-    # play.insert_one_player('Misha')
-    # play.insert_one_player('Asta')
-    # play.insert_one_player('Lina')
-    # play.insert_one_player('Ichigo')
-    # play.insert_one_player('Sergey')
-    # play.delete_one_player(uniq_id=13)
-    # play.delete_one_player(name='Ziya')
-    # play.insert_one_player("Ziya")
-    # play.delete_one_player(name="Ziya")

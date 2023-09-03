@@ -1,4 +1,4 @@
-from src.serviсes.finished_matches_persistence_service.interaction_table_ABS \
+from src.services.finished_matches_persistence_service.interaction_table_ABS \
     import InteractionTableABS
 # import json
 

@@ -1,3 +1,6 @@
+# Команда для билда - docker build . -t main_image_app
+# Команда для запуска - docker run --name my_server_machine -it -p 8080:80 id_images
+
 FROM tecktron/python-waitress:latest
 
 WORKDIR /app

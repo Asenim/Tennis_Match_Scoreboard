@@ -1,6 +1,7 @@
 experiments
 venv
 .idea
+Dockerfile_for_db
 test_directory
 
 # Default ignored files
