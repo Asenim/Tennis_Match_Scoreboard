@@ -1,0 +1,60 @@
+.name_page {
+    text-align: center;
+    font-size: 2.5em;
+    background-color: darkblue;
+    color: aqua;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+    height: 125px;
+}
+
+.table_scoreboard {
+    background-color: darkcyan;
+    color: darkblue;
+    margin-left: auto;
+    margin-right: auto;
+    padding-right: 35px;
+    padding-left: 35px;
+    padding-bottom: 35px;
+}
+
+.row_a_cap {
+}
+
+.cell_a_cap {
+    text-align: center;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 1.5em;
+}
+
+.cell_a_player_1 {
+    text-align: center;
+    background-color: green;
+    color: lightgoldenrodyellow;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 1.5em;
+}
+
+.cell_a_player_2 {
+    text-align: center;
+    background-color: burlywood;
+    color: black;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 1.5em;
+}
+
+.cell_a_button {
+    text-align: center;
+
+}
+
+body {
+    background-color: cornflowerblue;
+}

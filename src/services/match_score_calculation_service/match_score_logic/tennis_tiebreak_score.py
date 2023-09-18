@@ -1,5 +1,11 @@
 class TieBreakScore:
     def __init__(self, player_score1_object, player_score2_object):
+        """
+        Класс нужен для определения победителя в сете
+        путем проведения тай-брейка.
+        :param player_score1_object:
+        :param player_score2_object:
+        """
         self.player_score1_object = player_score1_object
         self.player_score2_object = player_score2_object
 

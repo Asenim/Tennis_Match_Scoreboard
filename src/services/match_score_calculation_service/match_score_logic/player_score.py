@@ -1,6 +1,6 @@
 class PlayerScore:
-    def __init__(self, player_name):
-        self.__player_name = player_name
+    def __init__(self, player_object_model):
+        self.__player_name = player_object_model
         self.score = 0
         self.game = 0
         self.game_set = 0

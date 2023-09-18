@@ -74,7 +74,7 @@ class SelectInteractionTableMatches(InteractionTableMatchesABS):
         :param player_name: Имя игрока для поиска в столбцах
             Player1 и Player2
         :return list_result: список с записями, где есть игрок
-            c именем player_name в каждом из столбцов.
+            c именем player_object_model в каждом из столбцов.
         """
         session = Session(bind=engine)
 

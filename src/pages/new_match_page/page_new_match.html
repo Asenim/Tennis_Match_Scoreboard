@@ -8,26 +8,24 @@
 <body>
     <h1 class="new_match"> This is the page to start a new match </h1>
     <h2 class="name_players"> Enter player names </h2>
-    <form>
+    <form method="post" action="http://localhost:8080/new-match">
         <div>
             <p>
-                <label> Player 1 <br>
-                    <input class="text" type="text" value="" required>
+                <label for="Player1"> Player 1 <br>
+                    <input name="Player 1" id="Player1" class="text" type="text" value="" required>
                 </label>
             </p>
 
             <p>
-                <label> Player 2 <br>
-                    <input class="text" type="text" value="" required>
+                <label for="Player2"> Player 2 <br>
+                    <input name="Player 2" id="Player2" class="text" type="text" value="" required>
                 </label>
             </p>
         </div>
-    </form>
-    <form>
-        <p>
-            <input class="button2" type="button" value="Start Game">
-        </p>
-    </form>>
 
+        <div>
+            <p><input class="button2" type="submit" value="Start Game"></p>
+        </div>
+    </form>
 </body>
 </html>
