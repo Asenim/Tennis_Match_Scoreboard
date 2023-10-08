@@ -1,8 +1,10 @@
-from .interaction_table_matches_ABS import InteractionTableMatchesABS
+from src.services.finished_matches_persistence_service.interaction_table_matches.interaction_table_matches_ABS \
+    import InteractionTableMatchesABS
 from src.data_base_directory.db_schema_conf import *
+from sqlalchemy import func
 
 
-class SelectInteractionTableMatches(InteractionTableMatchesABS):
+class SelectTableMatches(InteractionTableMatchesABS):
     def select_all(self):
         """
         Метод выбирает все матчи из таблицы
@@ -95,6 +97,48 @@ class SelectInteractionTableMatches(InteractionTableMatchesABS):
             # Выводим в консоль и возвращаем корректный список
             self.output_console_list_result(list_result)
             return list_result
+
+        except ConnectionError:
+            print("Connecting Error")
+
+        finally:
+            session.close()
+            print("Session closed!")
+
+    def select_by_id(self, record_id):
+        session = Session(bind=engine)
+
+        try:
+            record_object = session.query(Match).filter(Match.ID == record_id)
+            list_result = self.result_matches(record_object)
+
+            # Выводим в консоль и возвращаем корректный список
+            self.output_console_list_result(list_result)
+            return list_result
+
+        except ConnectionError:
+            print("Connecting Error")
+
+        finally:
+            session.close()
+            print("Session closed!")
+
+    @staticmethod
+    def select_last_record():
+        """
+        Получение последней записи из таблицы Matches
+        :return: ID последней записи (ВНИМАНИЕ! Возвращается прям ID в
+            виде целого ЧИСЛА, не ОБЪЕКТ)
+        """
+        session = Session(bind=engine)
+
+        try:
+            record_object = session.query(func.max(Match.ID)).scalar()
+            # list_result = self.result_matches(record_object)
+
+            # Выводим в консоль и возвращаем корректный список
+            # self.output_console_list_result(list_result)
+            return record_object
 
         except ConnectionError:
             print("Connecting Error")

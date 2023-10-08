@@ -1,6 +1,7 @@
 class PlayerScore:
     def __init__(self, player_object_model):
-        self.__player_name = player_object_model
+        self.player_ID = player_object_model.ID
+        self.player_name = player_object_model.Name
         self.score = 0
         self.game = 0
         self.game_set = 0
@@ -20,7 +21,7 @@ class PlayerScore:
             "Extra-score": self.extra_move_score
         }
 
-        print(f'{self.__player_name}')
+        print(f'{self.player_name}')
         print("----------")
         for key, value in __player_score.items():
             print(f"{key}: {value}")

@@ -5,7 +5,7 @@ from src.services.match_score_calculation_service.match_score_logic.tennis_tiebr
 
 
 class CoolBusSetUp:
-    def __init__(self, player1_object_model, player2_object_model):
+    def __init__(self, player1_object_model, player2_object_model, point_win_request):
         """Класс запускает логику приложения"""
         self.player_1 = PlayerScore(player1_object_model)
         self.player_2 = PlayerScore(player2_object_model)
@@ -27,7 +27,8 @@ class CoolBusSetUp:
             if self.player_1.game == 6 and self.player_2.game == 6:
                 self.__tie_break_wrum_wrum()
 
-            num = input("Вы в зоне счета Введите 1, 2 или 3 ")
+            # num = input("Вы в зоне счета Введите 1, 2 или 3 ")
+            num = point_win_request
 
             if num == '1':
                 game_score_up.player1_count_score()

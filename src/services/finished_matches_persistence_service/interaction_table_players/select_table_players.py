@@ -28,6 +28,33 @@ class SelectInteractionTablePlayers(InteractionTableABS):
             print("Session closed!")
 
     @staticmethod
+    def select_one_player(player_name):
+        """
+        Метод служит для выбора одного игрока из таблицы
+        Players по имени и возвращает ОБЪЕКТ записи игрока.
+        :return: Объект записи из таблицы players
+        """
+        session = Session(bind=engine)
+
+        try:
+            # Получаем объект игрока из базы данных.
+            player_list_object = session.query(Player).filter(Player.Name == player_name).first()
+
+            # И формируем список с корректным результатом
+            # list_result = self.__result_players(player_object)
+            # player_object = player_list_object.get()
+            # Выводим в консоль и возвращаем корректный список
+            # self.output_console_list_result(list_result)
+            return player_list_object
+
+        except ConnectionError:
+            print("Connecting Error")
+
+        finally:
+            session.close()
+            print("Session closed!")
+
+    @staticmethod
     def __result_players(select_player):
         """
         Метод для формирования списка
@@ -44,8 +71,3 @@ class SelectInteractionTablePlayers(InteractionTableABS):
                                        select.Name]
             list_result.append(list_add_in_list_result)
         return list_result
-
-
-if "__main__" == __name__:
-    select_all_player = SelectInteractionTablePlayers()
-    select_all_player.select_all()

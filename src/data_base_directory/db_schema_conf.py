@@ -39,7 +39,8 @@ class Match(Base):
     ID = Column(Integer(), primary_key=True, autoincrement=True)
     Player1 = Column(Integer(), ForeignKey('Player.ID', ondelete="CASCADE"), nullable=False)
     Player2 = Column(Integer(), ForeignKey('Player.ID', ondelete="CASCADE"), nullable=False)
-    Winner = Column(Integer(), ForeignKey('Player.ID', ondelete="CASCADE"), nullable=False)
+    Winner = Column(Integer(), ForeignKey('Player.ID', ondelete="CASCADE"), nullable=True)
+    Score = Column(VARCHAR(1000), nullable=True)
 
     player1 = relationship(
         "Player",
