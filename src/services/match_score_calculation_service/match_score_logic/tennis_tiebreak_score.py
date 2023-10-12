@@ -54,6 +54,8 @@ class TieBreakScore:
         player_object_loose.tie_break = 0
 
         # Обнуляем Гейм
+        player_object_win.score = 0
+        player_object_loose.score = 0
         player_object_win.game = 0
         player_object_loose.game = 0
         player_object_win.extra_move_score = 0

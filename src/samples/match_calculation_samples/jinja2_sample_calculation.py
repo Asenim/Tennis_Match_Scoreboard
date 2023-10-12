@@ -1,12 +1,13 @@
 import jinja2
 
 
-def generate_sample_calculation(player_1_object, player_2_object, displayable_pages):
+def generate_sample_calculation(player_1_object, player_2_object, id_match, displayable_pages):
     """
     Метод Вставляет необходимые данные в шаблон страницы
     и отдает результат
     :param player_1_object: объект класса PlayerScore (Счета игрока 1)
     :param player_2_object: объект класса PlayerScore (Счета игрока 2)
+    :param id_match: id текущего матча
     :param displayable_pages: Сама отображаемая страница.
         /app/src/pages
     :return:
@@ -45,5 +46,6 @@ def generate_sample_calculation(player_1_object, player_2_object, displayable_pa
                                       p2_dis_game=p2_game,
                                       p2_dis_set=p2_set,
                                       p2_dis_tiebreak=p2_tiebreak,
+                                      id=id_match
                                       )
     return result_page

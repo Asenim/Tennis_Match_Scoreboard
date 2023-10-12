@@ -28,7 +28,7 @@ class SelectInteractionTablePlayers(InteractionTableABS):
             print("Session closed!")
 
     @staticmethod
-    def select_one_player(player_name):
+    def select_one_player(player_name=None, player_id=None):
         """
         Метод служит для выбора одного игрока из таблицы
         Players по имени и возвращает ОБЪЕКТ записи игрока.
@@ -37,15 +37,13 @@ class SelectInteractionTablePlayers(InteractionTableABS):
         session = Session(bind=engine)
 
         try:
-            # Получаем объект игрока из базы данных.
-            player_list_object = session.query(Player).filter(Player.Name == player_name).first()
-
-            # И формируем список с корректным результатом
-            # list_result = self.__result_players(player_object)
-            # player_object = player_list_object.get()
-            # Выводим в консоль и возвращаем корректный список
-            # self.output_console_list_result(list_result)
-            return player_list_object
+            if player_name is not None:
+                # Получаем объект игрока из базы данных.
+                player_object = session.query(Player).filter(Player.Name == player_name).first()
+                return player_object
+            elif player_id is not None:
+                player_object = session.query(Player).filter(Player.ID == player_id).first()
+                return player_object
 
         except ConnectionError:
             print("Connecting Error")

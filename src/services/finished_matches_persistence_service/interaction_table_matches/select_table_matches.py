@@ -105,16 +105,13 @@ class SelectTableMatches(InteractionTableMatchesABS):
             session.close()
             print("Session closed!")
 
-    def select_by_id(self, record_id):
+    @staticmethod
+    def select_by_id(record_id):
         session = Session(bind=engine)
 
         try:
-            record_object = session.query(Match).filter(Match.ID == record_id)
-            list_result = self.result_matches(record_object)
-
-            # Выводим в консоль и возвращаем корректный список
-            self.output_console_list_result(list_result)
-            return list_result
+            record_object = session.query(Match).filter(Match.ID == record_id).first()
+            return record_object
 
         except ConnectionError:
             print("Connecting Error")

@@ -52,6 +52,8 @@
 
 .cell_a_button {
     text-align: center;
+    margin: auto;
+    display: block;
 
 }
 

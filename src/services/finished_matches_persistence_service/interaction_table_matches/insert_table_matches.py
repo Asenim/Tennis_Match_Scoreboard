@@ -61,9 +61,7 @@ class InsertTableMatches(InteractionTableMatchesABS):
             try:
                 update_object_match.Score = None
                 session.flush()
-                # session.commit()
                 update_object_match.Score = json_object
-                #session.add(update_object_match)
                 session.commit()
                 print("Data added to db")
 
