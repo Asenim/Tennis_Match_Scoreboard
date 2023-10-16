@@ -17,8 +17,10 @@ class InteractionTableMatchesABS(InteractionTableABS):
         list_result = []
         for select in select_match:
             list_add_in_list_result = [
+                select.ID,
                 select.player1.Name,
                 select.player2.Name,
-                select.winner.Name]
+                select.winner.Name
+            ]
             list_result.append(list_add_in_list_result)
         return list_result

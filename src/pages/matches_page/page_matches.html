@@ -17,26 +17,34 @@
     <form class="search">
          <div>
             <p>
-                <input class="text_search" type="text" value="" placeholder="Search" required>
-                <input class="button_search" type="button" value="Find in list">
+                <label>
+                    <input class="text_search" type="search" name="filter_by_name" value="" placeholder="Search Player" required>
+                    <input class="button_search" type="submit" value="Find">
+                </label>
             </p>
          </div>
     </form>
 
     <form class="python_window">
-        <ul>
-            {% for item in my_object -%}
-                <li> {{item}} <li>
-            {% endfor -%}
-        </ul>
+        {% for match in all_match -%}
+        <div style="display: table" class="my_table">
+            <div style="display: table-row" class="my_table_row">
+                <div style="display: table-cell" class="my_table_cell"> {{match.0}} </div>
+                <div style="display: table-cell" class="my_table_cell"> {{match.1}} </div>
+                <div style="display: table-cell" class="my_table_cell"> {{match.2}} </div>
+                <div style="display: table-cell" class="my_table_cell"> {{match.3}} </div>
+            </div>
+        </div>
+        {% endfor -%}
+
     </form>>
 
     <div class="pages_list">
-        <a>&NestedLessLess;</a>
-        <a>1</a>
-        <a>2</a>
-        <a>3</a>
-        <a>&NestedGreaterGreater;</a>
+        <a href="http://localhost:8080/matches?page={{ pages - 1 }}">&NestedLessLess;</a>
+        {% for number in range(1, page_number + 1) -%}
+            <a href="http://localhost:8080/matches?page={{number}}"> {{ number }} </a>
+        {% endfor -%}
+        <a href="http://localhost:8080/matches?page={{ pages + 1 }}">&NestedGreaterGreater;</a>
     </div>
 </body>
 </html>

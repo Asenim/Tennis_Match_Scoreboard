@@ -5,22 +5,26 @@ from sqlalchemy import func
 
 
 class SelectTableMatches(InteractionTableMatchesABS):
-    def select_all(self):
+    # @staticmethod
+    def select_all(self, param_offset, param_limit):
         """
         Метод выбирает все матчи из таблицы
         Matches и возвращает эту информацию в
         виде списка.
-        :return list_result: список записей
+        :param param_offset: Параметр для определения смещения страницы.
+        :param param_limit: Параметр для обозначения лимита записей на странице.
+        :return select_all_matches: список записей
             всех сыгранных матчей
         """
         session = Session(bind=engine)
 
         try:
-            select_all_matches = session.query(Match).all()
+            select_all_matches = session.query(Match).filter(Match.Winner != None)\
+                .offset(param_offset).limit(param_limit).all()
             list_result = self.result_matches(select_all_matches)
-            self.output_console_list_result(list_result)
+            count_all_matches = session.query(Match).filter(Match.Winner != None).count()
 
-            return list_result
+            return [list_result, count_all_matches]
 
         except ConnectionError:
             print("Connecting Error")
@@ -52,11 +56,11 @@ class SelectTableMatches(InteractionTableMatchesABS):
             # Делаем выборку фильтруя по обоим столбцам и игрокам
             select_match = session.query(Match).filter(
                 Match.Player1 == player_object_1.ID,
-                Match.Player2 == player_object_2.ID
+                Match.Player2 == player_object_2.ID,
+                Match.Winner != None
             )
 
             list_result = self.result_matches(select_match)
-            self.output_console_list_result(list_result)
             return list_result
 
         except ConnectionError:
@@ -66,7 +70,7 @@ class SelectTableMatches(InteractionTableMatchesABS):
             session.close()
             print("Session closed!")
 
-    def selection_by_one_name(self, player_name):
+    def selection_by_one_name(self, player_name, param_offset, param_limit):
         """
         Метод делает выборку из талицы по столбцу
         name_p1 = Player1 и name_p1 = Player2
@@ -75,6 +79,8 @@ class SelectTableMatches(InteractionTableMatchesABS):
         При чем ищется первое вхождение по любому из столбцов.
         :param player_name: Имя игрока для поиска в столбцах
             Player1 и Player2
+        :param param_offset: Параметр для определения смещения страницы.
+        :param param_limit: Параметр для обозначения лимита записей на странице.
         :return list_result: список с записями, где есть игрок
             c именем player_object_model в каждом из столбцов.
         """
@@ -84,18 +90,21 @@ class SelectTableMatches(InteractionTableMatchesABS):
             # Получаем объект игрока из базы данных.
             # Получаем две записи из базы данных фильтруя их по СТОЛБЦАМ.
             player_object = session.query(Player).filter(Player.Name == player_name).one()
-            select_target_matches_column_1 = session.query(Match).filter(Match.Player1 == player_object.ID)
-            select_target_matches_column_2 = session.query(Match).filter(Match.Player2 == player_object.ID)
+            select_target_matches_column_1 = session.query(Match).filter(Match.Player1 == player_object.ID,
+                                                                         Match.Winner != None)
+            select_target_matches_column_2 = session.query(Match).filter(Match.Player2 == player_object.ID,
+                                                                         Match.Winner != None)
 
             # Объединяем записи для корректного отображения.
-            union_result = select_target_matches_column_1.union_all(select_target_matches_column_2)
+            union_result = select_target_matches_column_1.union_all(select_target_matches_column_2).\
+                offset(param_offset).limit(param_limit).all()
 
             # Выполняем запрос result = session.execute(union_result).all() -
             # И формируем список с корректным результатом
             list_result = self.result_matches(union_result)
 
             # Выводим в консоль и возвращаем корректный список
-            self.output_console_list_result(list_result)
+            # self.output_console_list_result(list_result)
             return list_result
 
         except ConnectionError:

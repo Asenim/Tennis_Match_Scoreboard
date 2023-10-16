@@ -39,6 +39,7 @@
     font-size: 25px;
     margin-right: 20px;
     margin-left: 20px;
+    width: 200px;
 }
 
 .button_search:hover {
@@ -92,6 +93,22 @@
     background-color: green;
     -webkit-transition: all .12ms linear;
     -moz-transition: all .12ms linear;
+}
+
+.my_table {
+    text-align: center;
+    margin-right: auto;
+    margin-left: auto;
+}
+.my_table_row {
+}
+.my_table_cell {
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 1.2em;
 }
 
 body {

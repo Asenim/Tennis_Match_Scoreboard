@@ -40,8 +40,27 @@ class InsertTableMatches(InteractionTableMatchesABS):
             session.close()
             print("Session closed!")
 
-    def insert_winner_player_id(self):
-        pass
+    @staticmethod
+    def insert_winner_player_id(id_match, player_id):
+        session = Session(bind=engine)
+        try:
+            update_object_match = session.query(Match).filter(id_match == Match.ID).first()
+
+            try:
+                update_object_match.Winner = player_id
+                session.commit()
+                print("Data added to db")
+
+            except ValueError:
+                print("There are no players with this ID in the players table")
+
+        except ConnectionError:
+            print("Failed to connect to database")
+        finally:
+            # session.commit()
+            # print("Data added to db")
+            session.close()
+            print("Session closed!")
 
     @staticmethod
     def update_score_match(id_match, json_object):

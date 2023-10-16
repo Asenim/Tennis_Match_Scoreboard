@@ -17,6 +17,8 @@ from src.services.finished_matches_persistence_service.interaction_table_matches
 # Импорт сервисов логики приложения
 from src.services.match_score_calculation_service.match_score_logic.player_score import PlayerScore
 from src.services.match_score_calculation_service.coolbus_setup import CoolBusSetUp
+# Прочие воспомогательные модули
+import math
 
 
 def application(env, start_response):
@@ -41,12 +43,63 @@ def application(env, start_response):
             reading = index.read()
             return [reading.encode()]
 
-    # Страница завершеннных матчей
-    if url == 'matches':
+    # Страница завершенных матчей
+    get_url = url.split('?')
+    if get_url[0] == 'matches':
         start_response('200 OK', [('Content-Type', 'text/html')])
 
-        result = jinja2_result_page_matches.generate_result_page_matches()
-        return [result.encode()]
+        get_response = get_url[1].split("&")
+        if len(get_response) == 1:
+            page_number = get_response[0].split('=')
+            int_page_num = int(page_number[1])
+
+            # Номер страницы
+            page = 0 + int_page_num
+            if page <= 0:
+                page = 1
+            # Количество записей на одну страницу
+            quantity_per_page = 1
+            # Определяем смещение и лимит для запроса пагинации
+            offset = (page - 1) * quantity_per_page
+            start_select_matches = SelectTableMatches()
+
+            # Получаем записи из БД
+            all_matches_and_count_all_match = start_select_matches.select_all(param_offset=offset,
+                                                                              param_limit=quantity_per_page)
+            all_matches = all_matches_and_count_all_match[0]
+            count_matches = all_matches_and_count_all_match[1]
+            # Количество страниц необходимое для отображения всех матчей
+            quantity_pages = math.ceil(count_matches / quantity_per_page)
+
+            result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
+                                                                             count_number=quantity_pages,
+                                                                             page_num=page)
+
+            return [result.encode()]
+        elif len(get_response) >= 2:
+            # Достаем номер страницы
+            page_number = get_response[0].split('=')
+            int_page_num = int(page_number[1])
+            # Достаем имя игрока по которому будем проводить поиск
+            search_player = get_response[1].split('=')
+            player_name_is_url = search_player[1]
+            start_select_matches = SelectTableMatches()
+            # Номер страницы
+            page = 0 + int_page_num
+            # Количество записей на одну страницу
+            quantity_per_page = 2
+            # Определяем смещение и лимит для запроса пагинации
+            offset = (page - 1) * quantity_per_page
+            start_select_matches = SelectTableMatches()
+
+            all_matches = start_select_matches.selection_by_one_name(player_name_is_url,
+                                                                     offset, quantity_per_page)
+
+            result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
+                                                                             count_number=quantity_per_page,
+                                                                             page_num=page)
+
+            return [result.encode()]
 
     if url == 'matches_style.css':
         start_response('200 OK', [('Content-Type', 'text/css')])
@@ -57,6 +110,10 @@ def application(env, start_response):
     # Страница нового матча
     if url == 'new-match':
         start_response('200 OK', [('Content-Type', 'text/html')])
+        """
+        Добавить возмодность начинать матч если имя которое уже есть в БД 
+        отправляется еще раз
+        """
 
         result_page = jinja2_result_new_match.generate_result_new_match()
         return [result_page.encode()]
@@ -172,22 +229,30 @@ def application(env, start_response):
         start_count_score = run_class_coolbus_setup.start_counting_score()
         score_player_1_object = start_count_score[0]
         score_player_2_object = start_count_score[1]
-        # Переводим данные в формат json
         run_new_data_is_object_to_json = ObjectToJsonToDB(score_player_1_object, score_player_2_object)
-        new_json_data = run_new_data_is_object_to_json.object_to_json()
-        # Обновляем результаты счета в БД
         run_class_insert_table_matches = InsertTableMatches()
-        run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
 
-        """
-        Задача - сделать новый редирект на страницу завершения матча и показа 
-        его результатов
-        """
         # Производим redirect
-        if score_player_1_object.game_set < 3 or score_player_2_object.game_set < 3:
-            start_response('302 Found', [('Location', f'/match_score?uuid={id_current_match}')])
-        else:
+        if score_player_1_object.game_set >= 3:
+
+            new_json_data = run_new_data_is_object_to_json.object_to_json()
+            run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
+
+            run_class_insert_table_matches.insert_winner_player_id(id_current_match, score_player_1_object.player_ID)
             start_response('302 Found', [('Location', f"/matches")])
+
+        elif score_player_2_object.game_set >= 3:
+            new_json_data = run_new_data_is_object_to_json.object_to_json()
+            run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
+
+            run_class_insert_table_matches.insert_winner_player_id(id_current_match, score_player_2_object.player_ID)
+            start_response('302 Found', [('Location', f"/matches")])
+
+        else:
+            new_json_data = run_new_data_is_object_to_json.object_to_json()
+            run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
+
+            start_response('302 Found', [('Location', f'/match_score?uuid={id_current_match}')])
 
 
 def post_new_match_handler(request_body):
