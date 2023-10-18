@@ -7,10 +7,13 @@ class OngoingMatchesService:
         self.player_2 = player_2
         self.interaction_table_players = InteractionTablePlayers()
 
-    def insert_in_table_players(self):
+    def insert_in_table_players_and_return_players(self):
         """
         Метод добавляет игроков в базу данных Players
-        :return:
+        :return [player_1 player_2]: Список игроков
         """
-        self.interaction_table_players.insert_one_player(self.player_1)
-        self.interaction_table_players.insert_one_player(self.player_2)
+        player_1 = self.interaction_table_players.insert_one_player_and_return_player_object(self.player_1)
+        player_2 = self.interaction_table_players.insert_one_player_and_return_player_object(self.player_2)
+
+        print(player_1.ID, player_1.Name, player_2.ID, player_2.Name)
+        return [player_1, player_2]

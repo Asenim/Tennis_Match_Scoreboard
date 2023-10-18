@@ -6,8 +6,8 @@ def generate_sample_matches(all_matches, count_page_num, page_num, displayable_p
     Метод генерирует шаблон веб страницы и отдаёт
     его пользователю.
     :param all_matches: Объект содержащий все матчи
-    :param count_page_num: количество страниц пагинации
-    :param page_num: Номер страницы
+    :param count_page_num: количество страниц пагинации для генерации динамичной страничек
+    :param page_num: Номер страницы для дальнейшего постраничного переключения
     :param displayable_pages: Сама отображаемая страница.
         /app/src/pages
     :return:

@@ -58,7 +58,7 @@ def application(env, start_response):
             if page <= 0:
                 page = 1
             # Количество записей на одну страницу
-            quantity_per_page = 1
+            quantity_per_page = 5
             # Определяем смещение и лимит для запроса пагинации
             offset = (page - 1) * quantity_per_page
             start_select_matches = SelectTableMatches()
@@ -110,11 +110,6 @@ def application(env, start_response):
     # Страница нового матча
     if url == 'new-match':
         start_response('200 OK', [('Content-Type', 'text/html')])
-        """
-        Добавить возмодность начинать матч если имя которое уже есть в БД 
-        отправляется еще раз
-        """
-
         result_page = jinja2_result_new_match.generate_result_new_match()
         return [result_page.encode()]
 
@@ -167,9 +162,9 @@ def application(env, start_response):
         print(get_url)
         list_player_objects = post_new_match_handler(request_body=request_body)
         print('p1, p2, id match', list_player_objects)
-        player1_obj = list_player_objects[0]
-        player2_obj = list_player_objects[1]
-        id_matches = list_player_objects[2]
+        player1_obj = list_player_objects[0][0]
+        player2_obj = list_player_objects[0][1]
+        id_matches = list_player_objects[1]
 
         # Создаются объекты подсчета матча
         player1_obj_score = PlayerScore(player1_obj)
@@ -233,21 +228,24 @@ def application(env, start_response):
         run_class_insert_table_matches = InsertTableMatches()
 
         # Производим redirect
+        # Если выиграл игрок 1
         if score_player_1_object.game_set >= 3:
 
             new_json_data = run_new_data_is_object_to_json.object_to_json()
             run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
 
             run_class_insert_table_matches.insert_winner_player_id(id_current_match, score_player_1_object.player_ID)
-            start_response('302 Found', [('Location', f"/matches")])
+            start_response('302 Found', [('Location', f"/matches?page=1")])
 
+        # Если выиграл игрок 2
         elif score_player_2_object.game_set >= 3:
             new_json_data = run_new_data_is_object_to_json.object_to_json()
             run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
 
             run_class_insert_table_matches.insert_winner_player_id(id_current_match, score_player_2_object.player_ID)
-            start_response('302 Found', [('Location', f"/matches")])
+            start_response('302 Found', [('Location', f"/matches?page=1")])
 
+        # Пока никто не выиграл
         else:
             new_json_data = run_new_data_is_object_to_json.object_to_json()
             run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
@@ -257,9 +255,9 @@ def application(env, start_response):
 
 def post_new_match_handler(request_body):
     """
-    Обработка POST запроса из страницы нового матча
+    Обработка POST запроса из страницы нового матча.
     :param request_body: для парсинга данных из тела запроса.
-    :return: Список с объектами игроков из БД и с ID матча
+    :return: Список со списком объектов игроков из БД и с ID матча
     """
     # Парсим полученную строку с именами
     str_request_body = str(request_body)
@@ -279,20 +277,19 @@ def post_new_match_handler(request_body):
     player_2 = list_player_2[1].replace(' ', '')
     # Добавляем игроков в Таблицу Players
     ongoing = OngoingMatchesService(player_1, player_2)
-    ongoing.insert_in_table_players()
+    players_list = ongoing.insert_in_table_players_and_return_players()
     # Извлекаем игроков из таблицы Player для получения их id
-    player1_obj_query = SelectInteractionTablePlayers()
-    player_1_obj = player1_obj_query.select_one_player(player_1)
-    player2_obj_query = SelectInteractionTablePlayers()
-    player_2_obj = player2_obj_query.select_one_player(player_2)
+    # player1_obj_query = SelectInteractionTablePlayers()
+    # player_1_obj = player1_obj_query.select_one_player(player_1)
+    # player2_obj_query = SelectInteractionTablePlayers()
+    # player_2_obj = player2_obj_query.select_one_player(player_2)
     # Отправляем Игроков в таблицу Matches
     insert_players_in_match_table = InsertTableMatches()
-    id_insert_match = insert_players_in_match_table.insert_matches(player_1_obj.ID, player_2_obj.ID)
+    id_insert_match = insert_players_in_match_table.insert_matches(players_list[0].ID, players_list[1].ID)
     print('insert_data_obj', id_insert_match, dir(id_insert_match))
 
     return [
-        player_1_obj,
-        player_2_obj,
+        players_list,
         id_insert_match
             ]
 

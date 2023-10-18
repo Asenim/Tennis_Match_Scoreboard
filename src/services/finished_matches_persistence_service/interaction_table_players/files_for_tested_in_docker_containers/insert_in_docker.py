@@ -4,7 +4,7 @@ from src.services.finished_matches_persistence_service.interaction_table_players
 
 if "__main__" == __name__:
     play = InteractionTablePlayers()
-    play.insert_one_player('Alfob')
-    play.insert_one_player('Sergey')
-    play.insert_one_player('Alsu')
-    play.insert_one_player('Ziya')
+    play.insert_one_player_and_return_player_object('Alfob')
+    play.insert_one_player_and_return_player_object('Sergey')
+    play.insert_one_player_and_return_player_object('Alsu')
+    play.insert_one_player_and_return_player_object('Ziya')

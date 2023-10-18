@@ -5,21 +5,28 @@ from src.data_base_directory.db_schema_conf import *
 
 class InteractionTablePlayers(InteractionTableABS):
     @staticmethod
-    def insert_one_player(name):
+    def insert_one_player_and_return_player_object(name):
         """
         Функция добавляет игроков в таблицу players
         :return:
         """
         session = Session(bind=engine)
         try:
-            __player = Player(
-                Name=name
-            )
+            player_object = session.query(Player).filter_by(Name=name).first()
+            # Проверяем существование игрока в Таблице
+            if player_object:
+                print('Существующий объект игрока', player_object)
+                return player_object
+            else:
+                __player = Player(
+                    Name=name
+                )
 
-            session.add(__player)
-            print(session.new)
-            session.commit()
-            print("Data added to db")
+                session.add(__player)
+                session.commit()
+                print("Data added to db")
+                added_player_object = session.query(Player).filter_by(Name=name).first()
+                return added_player_object
 
         except ConnectionError:
             print("Failed to connect to database")
