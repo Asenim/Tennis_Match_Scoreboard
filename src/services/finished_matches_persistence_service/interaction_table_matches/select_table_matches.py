@@ -98,6 +98,8 @@ class SelectTableMatches(InteractionTableMatchesABS):
             # Объединяем записи для корректного отображения.
             union_result = select_target_matches_column_1.union_all(select_target_matches_column_2).\
                 offset(param_offset).limit(param_limit).all()
+            count_matches = select_target_matches_column_1.union_all(select_target_matches_column_2).\
+                offset(param_offset).limit(param_limit).count()
 
             # Выполняем запрос result = session.execute(union_result).all() -
             # И формируем список с корректным результатом
@@ -105,7 +107,7 @@ class SelectTableMatches(InteractionTableMatchesABS):
 
             # Выводим в консоль и возвращаем корректный список
             # self.output_console_list_result(list_result)
-            return list_result
+            return [list_result, count_matches]
 
         except ConnectionError:
             print("Connecting Error")
