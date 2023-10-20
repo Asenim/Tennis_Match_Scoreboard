@@ -100,6 +100,7 @@ class SelectTableMatches(InteractionTableMatchesABS):
                 offset(param_offset).limit(param_limit).all()
             count_matches = select_target_matches_column_1.union_all(select_target_matches_column_2).\
                 offset(param_offset).limit(param_limit).count()
+            print('count select_in_by_one_name', count_matches)
 
             # Выполняем запрос result = session.execute(union_result).all() -
             # И формируем список с корректным результатом

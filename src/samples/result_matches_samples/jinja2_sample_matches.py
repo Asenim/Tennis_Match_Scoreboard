@@ -1,12 +1,13 @@
 import jinja2
 
 
-def generate_sample_matches(all_matches, count_page_num, page_num, displayable_pages):
+def generate_sample_matches(all_matches, count_page_num, page_num, player_name, displayable_pages):
     """
     Метод генерирует шаблон веб страницы и отдаёт
     его пользователю.
     :param all_matches: Объект содержащий все матчи
     :param count_page_num: количество страниц пагинации для генерации динамичной страничек
+    :param player_name: Имя игрока если он существует
     :param page_num: Номер страницы для дальнейшего постраничного переключения
     :param displayable_pages: Сама отображаемая страница.
         /app/src/pages
@@ -24,5 +25,6 @@ def generate_sample_matches(all_matches, count_page_num, page_num, displayable_p
     result_page = loading_page.render(all_match=all_matches,
                                       pages=page_num,
                                       page_number=count_page_num,
+                                      player_name=player_name
                                       )
     return result_page

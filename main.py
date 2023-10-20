@@ -53,9 +53,11 @@ def application(env, start_response):
             page = 1
             if page <= 0:
                 page = 1
+            # Имя игрока
+            name = ''
 
             # Количество записей на одну страницу
-            quantity_per_page = 5
+            quantity_per_page = 1
             # Определяем смещение для запроса пагинации
             offset = (page - 1) * quantity_per_page
             start_select_matches = SelectTableMatches()
@@ -70,7 +72,8 @@ def application(env, start_response):
 
             result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
                                                                              count_number=quantity_pages,
-                                                                             page_num=page)
+                                                                             page_num=page,
+                                                                             pl_name=name)
 
             return [result.encode()]
 
@@ -86,8 +89,10 @@ def application(env, start_response):
                     page = 0 + int_page_num
                     if page <= 0:
                         page = 1
+                    # Имя игрока
+                    name = ''
                     # Количество записей на одну страницу
-                    quantity_per_page = 5
+                    quantity_per_page = 1
                     # Определяем смещение для запроса пагинации
                     offset = (page - 1) * quantity_per_page
                     start_select_matches = SelectTableMatches()
@@ -102,7 +107,8 @@ def application(env, start_response):
 
                     result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
                                                                                      count_number=quantity_pages,
-                                                                                     page_num=page)
+                                                                                     page_num=page,
+                                                                                     pl_name=name)
 
                     return [result.encode()]
 
@@ -110,9 +116,15 @@ def application(env, start_response):
                     # Достаем имя игрока по которому будем проводить поиск
                     search_player = get_data[1]
 
+                    # Имя игрока
+                    name = search_player
+                    """Проблема заключается в том что эта часть неправильно отображает
+                    пагинацию"""
+
+                    int_page_num = 1
 
                     # Номер страницы
-                    page = 1
+                    page = 0 + int_page_num
                     if page <= 0:
                         page = 1
                     # Количество записей на одну страницу
@@ -122,10 +134,9 @@ def application(env, start_response):
                     start_select_matches = SelectTableMatches()
 
                     search_matches_and_count_all_match = start_select_matches.selection_by_one_name(search_player,
-                                                                                                 offset, quantity_per_page)
+                                                                                                    offset,
+                                                                                                    quantity_per_page)
                     # # Получаем записи из БД
-                    # all_matches_and_count_all_match = start_select_matches.select_all(param_offset=offset,
-                    #                                                                   param_limit=quantity_per_page)
                     all_matches = search_matches_and_count_all_match[0]
                     count_matches = search_matches_and_count_all_match[1]
                     # Количество страниц необходимое для отображения всех матчей
@@ -133,7 +144,8 @@ def application(env, start_response):
 
                     result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
                                                                                      count_number=quantity_pages,
-                                                                                     page_num=page)
+                                                                                     page_num=page,
+                                                                                     pl_name=name)
                     return [result.encode()]
 
             elif len(get_response) >= 2:
@@ -143,22 +155,29 @@ def application(env, start_response):
                 # Достаем имя игрока по которому будем проводить поиск
                 search_player = get_response[1].split('=')
                 player_name_is_url = search_player[1]
+                name = player_name_is_url
                 # Номер страницы
                 page = 0 + int_page_num
                 if page <= 0:
                     page = 1
                 # Количество записей на одну страницу
-                quantity_per_page = 5
+                quantity_per_page = 1
                 # Определяем смещение и лимит для запроса пагинации
                 offset = (page - 1) * quantity_per_page
                 start_select_matches = SelectTableMatches()
 
-                all_matches = start_select_matches.selection_by_one_name(player_name_is_url,
-                                                                         offset, quantity_per_page)
+                search_matches_and_count_all_match = start_select_matches.selection_by_one_name(player_name_is_url,
+                                                                                                offset,
+                                                                                                quantity_per_page)
+                all_matches = search_matches_and_count_all_match[0]
+                count_matches = search_matches_and_count_all_match[1]
+                # Количество страниц необходимое для отображения всех матчей
+                quantity_pages = math.ceil(count_matches / quantity_per_page)
 
                 result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
-                                                                                 count_number=quantity_per_page,
-                                                                                 page_num=page)
+                                                                                 count_number=quantity_pages,
+                                                                                 page_num=page,
+                                                                                 pl_name=name)
 
                 return [result.encode()]
 
@@ -355,4 +374,13 @@ def post_match_score_handler(request_body):
 
 
 def matches_router_func():
+    pass
+
+
+def page_formation_with_pagination():
+    """
+    Функция позволяет формировать страницы
+    по переданным параметрам.
+    :return:
+    """
     pass
