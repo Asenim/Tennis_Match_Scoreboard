@@ -18,8 +18,11 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    text-decoration: none;
+    font-size: 25px;
     margin-left: auto;
     margin-right: auto;
+    margin-bottom: 20px;
     width: 25%;
     background-color: cyan;
     color: darkslateblue;

@@ -45,7 +45,9 @@ label {
     font-size: 25px;
 }
 
-.button2 {
+.button_submit {
+    border-color: gray;
+    border-width: 5px;
     min-width: 300px;
     min-height: 80px;
     display: flex;
@@ -61,16 +63,45 @@ label {
     font-weight: bold;
 }
 
-.button2:hover {
+.button_submit:hover {
     color: navy;
     background: yellow;
     -webkit-transition: all .3s linear;
     -moz-transition: all .1s linear;
 }
 
-.button2:active{
+.button_submit:active{
     color: #000;
     background-color: green;
+}
+
+.button_redirect {
+    min-width: 170px;
+    min-height: 50px;
+    border: 5px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    background-color: red;
+    color: darkblue;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.button_redirect:hover {
+    color: navy;
+    background: yellow;
+    -webkit-transition: all .3s linear;
+    -moz-transition: all .1s linear;
+}
+
+.button_redirect:active {
+
 }
 
 body {

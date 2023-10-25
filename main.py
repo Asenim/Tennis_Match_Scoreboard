@@ -1,24 +1,25 @@
 """Файл с точкой входа в программу"""
-import wsgiref.util, wsgiref.handlers, wsgiref.simple_server
+import wsgiref.handlers
+import wsgiref.simple_server
+import wsgiref.util
 # Импорт шаблонов
-from src.samples.result_matches_samples import jinja2_result_page_matches
-from src.samples.new_match_samples import jinja2_result_new_match
 from src.samples.match_calculation_samples import jinja2_result_page_calculation
-# Импорт сервисов для работы с БД
-from src.services.ongoing_matches_service.ongoing_matches_service import OngoingMatchesService
-from src.services.finished_matches_persistence_service.interaction_table_players.select_table_players \
-    import SelectInteractionTablePlayers
+from src.samples.new_match_samples import jinja2_result_new_match
+# Импорт для работы роутинга
+from src.server_config.matches_url_config import MatchesUrlConfig
 from src.services.finished_matches_persistence_service.interaction_table_matches.insert_table_matches \
     import InsertTableMatches
 from src.services.finished_matches_persistence_service.interaction_table_matches.object_to_json_to_db \
     import ObjectToJsonToDB
 from src.services.finished_matches_persistence_service.interaction_table_matches.select_table_matches \
     import SelectTableMatches
+from src.services.finished_matches_persistence_service.interaction_table_players.select_table_players \
+    import SelectInteractionTablePlayers
+from src.services.match_score_calculation_service.coolbus_setup import CoolBusSetUp
 # Импорт сервисов логики приложения
 from src.services.match_score_calculation_service.match_score_logic.player_score import PlayerScore
-from src.services.match_score_calculation_service.coolbus_setup import CoolBusSetUp
-# Прочие воспомогательные модули
-import math
+# Импорт сервисов для работы с БД
+from src.services.ongoing_matches_service.ongoing_matches_service import OngoingMatchesService
 
 
 def application(env, start_response):
@@ -45,140 +46,42 @@ def application(env, start_response):
 
     # Страница завершенных матчей
     get_url = url.split('?')
+    match_url_config = MatchesUrlConfig()
     if get_url[0] == 'matches':
         start_response('200 OK', [('Content-Type', 'text/html')])
 
         if len(get_url) == 1:
-            # Номер страницы
-            page = 1
-            if page <= 0:
-                page = 1
-            # Имя игрока
-            name = ''
-
-            # Количество записей на одну страницу
-            quantity_per_page = 1
-            # Определяем смещение для запроса пагинации
-            offset = (page - 1) * quantity_per_page
-            start_select_matches = SelectTableMatches()
-
-            # Получаем записи из БД
-            all_matches_and_count_all_match = start_select_matches.select_all(param_offset=offset,
-                                                                              param_limit=quantity_per_page)
-            all_matches = all_matches_and_count_all_match[0]
-            count_matches = all_matches_and_count_all_match[1]
-            # Количество страниц необходимое для отображения всех матчей
-            quantity_pages = math.ceil(count_matches / quantity_per_page)
-
-            result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
-                                                                             count_number=quantity_pages,
-                                                                             page_num=page,
-                                                                             pl_name=name)
-
+            result = match_url_config.page_formation_for_all_matches()
             return [result.encode()]
 
+        # Если есть get параметры
         elif len(get_url) > 1:
+            get_param = get_url[1].split("&")
 
-            get_response = get_url[1].split("&")
-            if len(get_response) == 1:
-                get_data = get_response[0].split('=')
+            # Если get param 1
+            if len(get_param) == 1:
+                get_data = get_param[0].split('=')
+
                 if get_data[0] == 'page':
-                    int_page_num = int(get_data[1])
-
-                    # Номер страницы
-                    page = 0 + int_page_num
-                    if page <= 0:
-                        page = 1
-                    # Имя игрока
-                    name = ''
-                    # Количество записей на одну страницу
-                    quantity_per_page = 1
-                    # Определяем смещение для запроса пагинации
-                    offset = (page - 1) * quantity_per_page
-                    start_select_matches = SelectTableMatches()
-
-                    # Получаем записи из БД
-                    all_matches_and_count_all_match = start_select_matches.select_all(param_offset=offset,
-                                                                                      param_limit=quantity_per_page)
-                    all_matches = all_matches_and_count_all_match[0]
-                    count_matches = all_matches_and_count_all_match[1]
-                    # Количество страниц необходимое для отображения всех матчей
-                    quantity_pages = math.ceil(count_matches / quantity_per_page)
-
-                    result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
-                                                                                     count_number=quantity_pages,
-                                                                                     page_num=page,
-                                                                                     pl_name=name)
-
+                    result = match_url_config.page_formation_for_all_matches(page=get_data[1])
                     return [result.encode()]
 
                 elif get_data[0] == 'filter_by_name':
-                    # Достаем имя игрока по которому будем проводить поиск
-                    search_player = get_data[1]
+                    # Если имя пустое
+                    if get_data[1] == '':
+                        start_response('302 Found', [('Location', f'/matches')])
 
-                    # Имя игрока
-                    name = search_player
-                    """Проблема заключается в том что эта часть неправильно отображает
-                    пагинацию"""
-
-                    int_page_num = 1
-
-                    # Номер страницы
-                    page = 0 + int_page_num
-                    if page <= 0:
-                        page = 1
-                    # Количество записей на одну страницу
-                    quantity_per_page = 1
-                    # Определяем смещение для запроса пагинации
-                    offset = (page - 1) * quantity_per_page
-                    start_select_matches = SelectTableMatches()
-
-                    search_matches_and_count_all_match = start_select_matches.selection_by_one_name(search_player,
-                                                                                                    offset,
-                                                                                                    quantity_per_page)
-                    # # Получаем записи из БД
-                    all_matches = search_matches_and_count_all_match[0]
-                    count_matches = search_matches_and_count_all_match[1]
-                    # Количество страниц необходимое для отображения всех матчей
-                    quantity_pages = math.ceil(count_matches / quantity_per_page)
-
-                    result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
-                                                                                     count_number=quantity_pages,
-                                                                                     page_num=page,
-                                                                                     pl_name=name)
+                    result = match_url_config.page_formation_for_search_player(name=get_data[1])
                     return [result.encode()]
 
-            elif len(get_response) >= 2:
+            # Если get param 2 и более
+            elif len(get_param) >= 2:
                 # Достаем номер страницы
-                get_data = get_response[0].split('=')
-                int_page_num = int(get_data[1])
+                get_data = get_param[0].split('=')
                 # Достаем имя игрока по которому будем проводить поиск
-                search_player = get_response[1].split('=')
-                player_name_is_url = search_player[1]
-                name = player_name_is_url
-                # Номер страницы
-                page = 0 + int_page_num
-                if page <= 0:
-                    page = 1
-                # Количество записей на одну страницу
-                quantity_per_page = 1
-                # Определяем смещение и лимит для запроса пагинации
-                offset = (page - 1) * quantity_per_page
-                start_select_matches = SelectTableMatches()
+                search_player = get_param[1].split('=')
 
-                search_matches_and_count_all_match = start_select_matches.selection_by_one_name(player_name_is_url,
-                                                                                                offset,
-                                                                                                quantity_per_page)
-                all_matches = search_matches_and_count_all_match[0]
-                count_matches = search_matches_and_count_all_match[1]
-                # Количество страниц необходимое для отображения всех матчей
-                quantity_pages = math.ceil(count_matches / quantity_per_page)
-
-                result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
-                                                                                 count_number=quantity_pages,
-                                                                                 page_num=page,
-                                                                                 pl_name=name)
-
+                result = match_url_config.page_formation_for_search_player(page=get_data[1], name=search_player[1])
                 return [result.encode()]
 
     if url == 'matches_style.css':
@@ -374,13 +277,4 @@ def post_match_score_handler(request_body):
 
 
 def matches_router_func():
-    pass
-
-
-def page_formation_with_pagination():
-    """
-    Функция позволяет формировать страницы
-    по переданным параметрам.
-    :return:
-    """
     pass

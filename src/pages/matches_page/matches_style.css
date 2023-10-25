@@ -95,6 +95,34 @@
     -moz-transition: all .12ms linear;
 }
 
+.button_backs {
+    min-width: 150px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    text-decoration: none;
+    top: 80%;
+    left: 43%;
+    width: 15%;
+    background-color: cyan;
+    color: darkslateblue;
+}
+
+.button_backs:hover {
+    color: antiquewhite;
+    background: blueviolet;
+    -webkit-transition: all .3ms linear;
+    -moz-transition: all .3ms linear;
+}
+
+.button_backs:active {
+    color: #000;
+    background-color: darkslateblue;
+}
+
 .my_table {
     text-align: center;
     margin-right: auto;

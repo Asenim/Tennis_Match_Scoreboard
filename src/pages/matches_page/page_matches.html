@@ -18,7 +18,7 @@
          <div>
             <p>
                 <label>
-                    <input class="text_search" type="search" name="filter_by_name" value="" placeholder="Search Player" required>
+                    <input class="text_search" type="search" name="filter_by_name" value="" placeholder="Search Player">
                     <input class="button_search" type="submit" value="Find">
                 </label>
             </p>
@@ -37,7 +37,7 @@
         </div>
         {% endfor -%}
 
-    </form>>
+    </form>
 
     <div class="pages_list">
         <a href="http://localhost:8080/matches?page={{ pages - 1 }}{% if player_name %}&filter_by_name={{ player_name }}{% endif %}">&NestedLessLess;</a>
@@ -46,5 +46,10 @@
         {% endfor -%}
         <a href="http://localhost:8080/matches?page={{ pages + 1 }}{% if player_name %}&filter_by_name={{ player_name }}{% endif %}">&NestedGreaterGreater;</a>
     </div>
+
+    <form>
+        <a class="button_backs" href="http://localhost:8080"> Back to main page </a>
+    </form>
+
 </body>
 </html>

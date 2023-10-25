@@ -98,16 +98,17 @@ class SelectTableMatches(InteractionTableMatchesABS):
             # Объединяем записи для корректного отображения.
             union_result = select_target_matches_column_1.union_all(select_target_matches_column_2).\
                 offset(param_offset).limit(param_limit).all()
-            count_matches = select_target_matches_column_1.union_all(select_target_matches_column_2).\
-                offset(param_offset).limit(param_limit).count()
-            print('count select_in_by_one_name', count_matches)
 
-            # Выполняем запрос result = session.execute(union_result).all() -
+            # Считаем количество матчей
+            count_column_1 = session.query(Match).filter(Match.Player1 == player_object.ID,
+                                                         Match.Winner != None).count()
+            count_column_2 = session.query(Match).filter(Match.Player2 == player_object.ID,
+                                                         Match.Winner != None).count()
+            count_matches = count_column_1 + count_column_2
+
             # И формируем список с корректным результатом
             list_result = self.result_matches(union_result)
 
-            # Выводим в консоль и возвращаем корректный список
-            # self.output_console_list_result(list_result)
             return [list_result, count_matches]
 
         except ConnectionError:
