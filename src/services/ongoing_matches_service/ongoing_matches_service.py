@@ -15,5 +15,4 @@ class OngoingMatchesService:
         player_1 = self.interaction_table_players.insert_one_player_and_return_player_object(self.player_1)
         player_2 = self.interaction_table_players.insert_one_player_and_return_player_object(self.player_2)
 
-        print(player_1.ID, player_1.Name, player_2.ID, player_2.Name)
         return [player_1, player_2]

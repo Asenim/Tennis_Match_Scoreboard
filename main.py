@@ -15,7 +15,7 @@ from src.services.finished_matches_persistence_service.interaction_table_matches
     import SelectTableMatches
 from src.services.finished_matches_persistence_service.interaction_table_players.select_table_players \
     import SelectInteractionTablePlayers
-from src.services.match_score_calculation_service.coolbus_setup import CoolBusSetUp
+from src.services.match_score_calculation_service.match_start import MatchStart
 # Импорт сервисов логики приложения
 from src.services.match_score_calculation_service.match_score_logic.player_score import PlayerScore
 # Импорт сервисов для работы с БД
@@ -197,12 +197,12 @@ def application(env, start_response):
         print(player_1_score, player_2_score)
 
         # Запускаем логику приложения, меняем счет игроков и возвращаем объекты игроков
-        run_class_coolbus_setup = CoolBusSetUp(id_match=id_current_match,
-                                               player1_object_model=player_1_object,
-                                               player2_object_model=player_2_object,
-                                               player1_score=player_1_score,
-                                               player2_score=player_2_score,
-                                               point_win_request=num_win_player)
+        run_class_coolbus_setup = MatchStart(id_match=id_current_match,
+                                             player1_object_model=player_1_object,
+                                             player2_object_model=player_2_object,
+                                             player1_score=player_1_score,
+                                             player2_score=player_2_score,
+                                             point_win_request=num_win_player)
 
         start_count_score = run_class_coolbus_setup.start_counting_score()
         score_player_1_object = start_count_score[0]

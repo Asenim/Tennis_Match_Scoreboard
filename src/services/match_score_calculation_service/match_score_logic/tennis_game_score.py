@@ -72,26 +72,15 @@ class TennisGameScore:
         :return:
         """
         if self.__player1_score.score == 40 and self.__player1_score.extra_move_score > 0:
-            print()
             self.__player1_score.game = self.__player1_score.game + 1
-            print()
-            print('Cчет: ')
-            self.__player1_score.player_all_score_get()
-
             self.__player1_score.score = 0
             self.__player2_score.score = 0
             self.__player1_score.extra_move_score = 0
             self.__player2_score.extra_move_score = 0
-            print()
 
         elif self.__player2_score.score == 40 and self.__player2_score.extra_move_score > 0:
-            print()
             self.__player2_score.game = self.__player2_score.game + 1
-            print()
-            print('Cчет: ')
-            self.__player2_score.player_all_score_get()
             self.__player1_score.score = 0
             self.__player2_score.score = 0
             self.__player1_score.extra_move_score = 0
             self.__player2_score.extra_move_score = 0
-            print()

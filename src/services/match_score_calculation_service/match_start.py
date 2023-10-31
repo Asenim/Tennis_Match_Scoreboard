@@ -4,7 +4,7 @@ from src.services.match_score_calculation_service.match_score_logic.tennis_set_s
 from src.services.match_score_calculation_service.match_score_logic.tennis_tiebreak_score import TieBreakScore
 
 
-class CoolBusSetUp:
+class MatchStart:
     def __init__(self, id_match, player1_object_model, player2_object_model, player1_score, player2_score, point_win_request):
         """
         Класс запускает логику приложения
@@ -71,4 +71,3 @@ class CoolBusSetUp:
         elif num == '2':
             tie_break_score.player2_tie_break_win()
             return [self.player_1, self.player_2]
-

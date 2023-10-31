@@ -4,7 +4,7 @@
 # from src.services.match_score_calculation_service.match_score_logic.tennis_tiebreak_score import TieBreakScore
 #
 #
-# class CoolBusSetUp:
+# class MatchStart:
 #     def __init__(self, player1_object_model, player2_object_model):
 #         """Класс запускает логику приложения"""
 #         self.player_1 = PlayerScore(player1_object_model)
@@ -68,4 +68,4 @@
 #
 #
 # if __name__ == '__main__':
-#     wrum = CoolBusSetUp('Sergey', "Alfob")
+#     wrum = MatchStart('Sergey', "Alfob")
