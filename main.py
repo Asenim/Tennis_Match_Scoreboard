@@ -3,23 +3,16 @@ import wsgiref.handlers
 import wsgiref.simple_server
 import wsgiref.util
 # Импорт шаблонов
-from src.samples.match_calculation_samples import jinja2_result_page_calculation
 from src.samples.new_match_samples import jinja2_result_new_match
 # Импорт для работы роутинга
-from src.server_config.matches_url_config import MatchesUrlConfig
+from src.services.server_configuration.match_score_url_conf import MatchScoreUrlConf
+from src.services.server_configuration.matches_url_config import MatchesUrlConfig
+from src.services.server_configuration.new_match_data_insert import NewMatchDataInsert
+from src.services.server_configuration.match_score_data_handler import MatchScoreDataHandler
 from src.services.finished_matches_persistence_service.interaction_table_matches.insert_table_matches \
     import InsertTableMatches
 from src.services.finished_matches_persistence_service.interaction_table_matches.object_to_json_to_db \
     import ObjectToJsonToDB
-from src.services.finished_matches_persistence_service.interaction_table_matches.select_table_matches \
-    import SelectTableMatches
-from src.services.finished_matches_persistence_service.interaction_table_players.select_table_players \
-    import SelectInteractionTablePlayers
-from src.services.match_score_calculation_service.match_start import MatchStart
-# Импорт сервисов логики приложения
-from src.services.match_score_calculation_service.match_score_logic.player_score import PlayerScore
-# Импорт сервисов для работы с БД
-from src.services.ongoing_matches_service.ongoing_matches_service import OngoingMatchesService
 
 
 def application(env, start_response):
@@ -110,28 +103,9 @@ def application(env, start_response):
         get_parameter = get_url[1].split('=')
         id_matches = get_parameter[1]
 
-        # Получаем объекты игроков текущего матча
-        start_class_select_matches = SelectTableMatches()
-        start_class_select_players = SelectInteractionTablePlayers()
-        match_record = start_class_select_matches.select_by_id(id_matches)
-        player_1_id = match_record.Player1
-        player_2_id = match_record.Player2
-        player_1_object = start_class_select_players.select_one_player(player_id=player_1_id)
-        player_2_object = start_class_select_players.select_one_player(player_id=player_2_id)
+        match_score_url_conf = MatchScoreUrlConf()
 
-        # Получаем данные счета из json
-        run_class_object_to_json = ObjectToJsonToDB()
-        get_data_in_python_is_json = run_class_object_to_json.db_str_to_dict(id_matches)
-        score_player_1 = get_data_in_python_is_json[0]
-        score_player_2 = get_data_in_python_is_json[1]
-        # Создаём объекты для отрисовки
-        player1_obj_score = PlayerScore(player_1_object, score_player=score_player_1)
-        player2_obj_score = PlayerScore(player_2_object, score_player=score_player_2)
-
-        result_page = jinja2_result_page_calculation.generate_result_page_calculation(
-            player1_obj_score, player2_obj_score, id_matches
-        )
-
+        result_page = match_score_url_conf.page_formation_for_match_score(id_matches)
         return [result_page.encode()]
 
     if url == 'style_match_score_calculation.css':
@@ -143,23 +117,8 @@ def application(env, start_response):
     # Обработка данных со страницы начала матча
     if url == 'new_match_data_insert':
         print(get_url)
-        list_player_objects = post_new_match_handler(request_body=request_body)
-        print('p1, p2, id match', list_player_objects)
-        player1_obj = list_player_objects[0][0]
-        player2_obj = list_player_objects[0][1]
-        id_matches = list_player_objects[1]
-
-        # Создаются объекты подсчета матча
-        player1_obj_score = PlayerScore(player1_obj)
-        player2_obj_score = PlayerScore(player2_obj)
-        # Данные переводятся в формат json
-        run_class_object_to_json = ObjectToJsonToDB(player1_obj_score, player2_obj_score)
-        data_object_to_json = run_class_object_to_json.object_to_json()
-        print(data_object_to_json)
-        print(type(data_object_to_json))
-        # Обновляются данные в БД
-        update_matches_score = InsertTableMatches()
-        update_matches_score.update_score_match(id_matches, data_object_to_json)
+        start_new_match_data_insert = NewMatchDataInsert()
+        id_matches = start_new_match_data_insert.treatment_new_match_data(request_body)
 
         # Производим redirect
         start_response('302 Found', [('Location', f'/match_score?uuid={id_matches}')])
@@ -170,43 +129,12 @@ def application(env, start_response):
         str_request_body = str(request_body)
         # Убираем лишние символы из строки и разбиваем ее
         post_data = str_request_body.replace("'", "").split('&')
-        print(post_data)
-        # Получаем id текущего матча
-        key_value_id_match = post_data[0].split('=')
-        id_current_match = key_value_id_match[1]
-        # Получаем номер победившего игрока
-        key_value_player = post_data[1].split('=')
-        num_win_player = key_value_player[1]
+        start_match_score_data_handler = MatchScoreDataHandler
+        list_data = start_match_score_data_handler.treatment_match_score_data(post_data)
+        score_player_1_object = list_data[0]
+        score_player_2_object = list_data[1]
+        id_current_match = list_data[2]
 
-        # Достаем ID игроков из таблицы матча
-        run_class_select_table_matches = SelectTableMatches()
-        record_table_matches = run_class_select_table_matches.select_by_id(id_current_match)
-        id_player_1 = record_table_matches.Player1
-        id_player_2 = record_table_matches.Player2
-        print('id_players', id_player_1, id_player_2)
-        # Достаем самих игроков из таблицы игроков
-        run_class_select_players = SelectInteractionTablePlayers()
-        player_1_object = run_class_select_players.select_one_player(player_id=id_player_1)
-        player_2_object = run_class_select_players.select_one_player(player_id=id_player_2)
-        print('player_object', player_1_object.Name, player_2_object.Name)
-        # Получаем текущий счет
-        run_class_object_to_json = ObjectToJsonToDB()
-        current_score = run_class_object_to_json.db_str_to_dict(id_current_match)
-        player_1_score = current_score[0]
-        player_2_score = current_score[1]
-        print(player_1_score, player_2_score)
-
-        # Запускаем логику приложения, меняем счет игроков и возвращаем объекты игроков
-        run_class_coolbus_setup = MatchStart(id_match=id_current_match,
-                                             player1_object_model=player_1_object,
-                                             player2_object_model=player_2_object,
-                                             player1_score=player_1_score,
-                                             player2_score=player_2_score,
-                                             point_win_request=num_win_player)
-
-        start_count_score = run_class_coolbus_setup.start_counting_score()
-        score_player_1_object = start_count_score[0]
-        score_player_2_object = start_count_score[1]
         run_new_data_is_object_to_json = ObjectToJsonToDB(score_player_1_object, score_player_2_object)
         run_class_insert_table_matches = InsertTableMatches()
 
@@ -234,47 +162,3 @@ def application(env, start_response):
             run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
 
             start_response('302 Found', [('Location', f'/match_score?uuid={id_current_match}')])
-
-
-def post_new_match_handler(request_body):
-    """
-    Обработка POST запроса из страницы нового матча.
-    :param request_body: для парсинга данных из тела запроса.
-    :return: Список со списком объектов игроков из БД и с ID матча
-    """
-    # Парсим полученную строку с именами
-    str_request_body = str(request_body)
-    # Убираем лишние символы из строки и разбиваем ее
-    post_data = str_request_body.replace("'", "").split('&')
-    # Отделяем игроков друг от друга для дальнейшей обработки
-    post_data_player_1 = post_data[0]
-    post_data_player_2 = post_data[1]
-    # ong = OngoingMatchesService()
-    print('post_data', post_data, 'player_1', post_data_player_1, 'player_2', post_data_player_2)
-    # Вытаскиваем имена игроков
-    # Разбиваем строку с именами игроков
-    list_player_1 = post_data_player_1.split('=')
-    list_player_2 = post_data_player_2.split('=')
-    # Вытаскиваем из списков имена и убираем лишние пробелы
-    player_1 = list_player_1[1].replace(' ', '')
-    player_2 = list_player_2[1].replace(' ', '')
-    # Добавляем игроков в Таблицу Players
-    ongoing = OngoingMatchesService(player_1, player_2)
-    players_list = ongoing.insert_in_table_players_and_return_players()
-    # Отправляем Игроков в таблицу Matches
-    insert_players_in_match_table = InsertTableMatches()
-    id_insert_match = insert_players_in_match_table.insert_matches(players_list[0].ID, players_list[1].ID)
-    print('insert_data_obj', id_insert_match, dir(id_insert_match))
-
-    return [
-        players_list,
-        id_insert_match
-            ]
-
-
-def post_match_score_handler(request_body):
-    pass
-
-
-def matches_router_func():
-    pass
