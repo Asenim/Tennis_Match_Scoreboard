@@ -15,7 +15,7 @@ from src.services.server_configuration.match_score_data_handler import MatchScor
 def application(env, start_response):
     string_url = wsgiref.util.request_uri(env, include_query=True)
     # Получение данных из Post Запроса
-    request_body = env.get('wsgi.input').read()
+    request_body = env.get('wsgi.input').read().decode('utf-8')
     print('----------')
     print('request_body', request_body)
     print('----------')
@@ -23,12 +23,12 @@ def application(env, start_response):
 
     # Главная страница
     if url == '':
-        start_response('200 OK', [('Content-Type', 'text/html')])
+        start_response('200 OK', [('Content-Type', 'text/html;charset=utf-8')])
         result_page = jinja2_result_main_page.generate_result_main_page()
         return [result_page.encode()]
 
     if url == 'style_main.css':
-        start_response('200 OK', [('Content-Type', 'text/css')])
+        start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
         with open('/app/src/pages/main_page/style_main.css', 'r') as index:
             reading = index.read()
             return [reading.encode()]
@@ -37,7 +37,7 @@ def application(env, start_response):
     get_url = url.split('?')
     match_url_config = MatchesUrlConfig()
     if get_url[0] == 'matches':
-        start_response('200 OK', [('Content-Type', 'text/html')])
+        start_response('200 OK', [('Content-Type', 'text/html;charset=utf-8')])
 
         if len(get_url) == 1:
             result = match_url_config.page_formation_for_all_matches()
@@ -74,19 +74,19 @@ def application(env, start_response):
                 return [result.encode()]
 
     if url == 'matches_style.css':
-        start_response('200 OK', [('Content-Type', 'text/css')])
+        start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
         with open('/app/src/pages/matches_page/matches_style.css', 'r') as matches:
             reading = matches.read()
             return [reading.encode()]
 
     # Страница нового матча
     if url == 'new-match':
-        start_response('200 OK', [('Content-Type', 'text/html')])
+        start_response('200 OK', [('Content-Type', 'text/html;charset=utf-8')])
         result_page = jinja2_result_new_match.generate_result_new_match()
         return [result_page.encode()]
 
     if url == 'style_new_match.css':
-        start_response('200 OK', [('Content-Type', 'text/css')])
+        start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
         with open('/app/src/pages/new_match_page/style_new_match.css', 'r') as style_new_match:
             reading = style_new_match.read()
             return [reading.encode()]
@@ -94,7 +94,7 @@ def application(env, start_response):
     # Страница подсчета матча
     get_url = url.split('?')
     if get_url[0] == 'match_score':
-        start_response('200 OK', [('Content-Type', 'text/html')])
+        start_response('200 OK', [('Content-Type', 'text/html;charset=utf-8')])
         # Получаем get параметр (ID Матча)
         get_parameter = get_url[1].split('=')
         id_matches = get_parameter[1]
@@ -105,7 +105,7 @@ def application(env, start_response):
         return [result_page.encode()]
 
     if url == 'style_match_score_calculation.css':
-        start_response('200 OK', [('Content-Type', 'text/css')])
+        start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
         with open('/app/src/pages/match_score_page/style_match_score_calculation.css', 'r') as style_score_match:
             reading = style_score_match.read()
             return [reading.encode()]
@@ -149,7 +149,10 @@ def application(env, start_response):
                                                                  score_player_2_object)
             start_response('302 Found', [('Location', f'/match_score?uuid={id_current_match}')])
 
-    else:
-        page_not_found = '404, Page Not Found'
-        start_response('404 Not Found', [('Content-Type', 'text/plain')])
+    if url not in ['match_score_data_handler', 'new_match_data_insert',
+                   'style_match_score_calculation.css', 'match_score',
+                   'style_new_match.css', 'new-match', 'matches_style.css',
+                   'matches', 'style_main.css', '']:
+        page_not_found = '404, Страницы не существует'
+        start_response('404 Not Found', [('Content-Type', 'text/plain;charset=utf-8')])
         return [page_not_found.encode()]
