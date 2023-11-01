@@ -20,6 +20,10 @@ def generate_sample_calculation(player_1_object, player_2_object, id_match, disp
     """ Идея - обратиться к полям объекта игроков и пердавать даные полей """
     loading_page = env.get_template(displayable_pages)
 
+    # Возможные варианты шапок подсчета матча
+    tie_break_hand = 'TieBreak'
+    game_hand = 'Game'
+
     # Получаем данные игрока номер 1
     p1_name = player_1_object.player_name
     p1_score = player_1_object.score
@@ -36,16 +40,43 @@ def generate_sample_calculation(player_1_object, player_2_object, id_match, disp
 
     # dis - это имя объекта в html странице который будет отображаться
     # с помощью шаблонизатора.
-    result_page = loading_page.render(p1_dis_name=p1_name,
-                                      p1_dis_score=p1_score,
-                                      p1_dis_game=p1_game,
-                                      p1_dis_set=p1_set,
-                                      p1_dis_tiebreak=p1_tiebreak,
-                                      p2_dis_name=p2_name,
-                                      p2_dis_score=p2_score,
-                                      p2_dis_game=p2_game,
-                                      p2_dis_set=p2_set,
-                                      p2_dis_tiebreak=p2_tiebreak,
-                                      id=id_match
-                                      )
+    if p1_score == 40 and p2_score == 40:
+        result_page = loading_page.render(p1_dis_name=p1_name,
+                                          p1_dis_score="AD",
+                                          p1_dis_game=p1_game,
+                                          p1_dis_set=p1_set,
+                                          p2_dis_name=p2_name,
+                                          p2_dis_score="AD",
+                                          p2_dis_game=p2_game,
+                                          p2_dis_set=p2_set,
+                                          id=id_match,
+                                          handler_game=game_hand
+                                          )
+
+    elif p1_game == 6 and p2_game == 6:
+        result_page = loading_page.render(p1_dis_name=p1_name,
+                                          p1_dis_score=p1_score,
+                                          p1_dis_game=p1_tiebreak,
+                                          p1_dis_set=p1_set,
+                                          p2_dis_name=p2_name,
+                                          p2_dis_score=p2_score,
+                                          p2_dis_game=p2_tiebreak,
+                                          p2_dis_set=p2_set,
+                                          id=id_match,
+                                          handler_game=tie_break_hand
+                                          )
+
+    else:
+        result_page = loading_page.render(p1_dis_name=p1_name,
+                                          p1_dis_score=p1_score,
+                                          p1_dis_game=p1_game,
+                                          p1_dis_set=p1_set,
+                                          p2_dis_name=p2_name,
+                                          p2_dis_score=p2_score,
+                                          p2_dis_game=p2_game,
+                                          p2_dis_set=p2_set,
+                                          id=id_match,
+                                          handler_game=game_hand
+                                          )
+
     return result_page
