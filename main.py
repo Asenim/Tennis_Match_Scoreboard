@@ -24,9 +24,6 @@ def application(env, start_response):
     # Главная страница
     if url == '':
         start_response('200 OK', [('Content-Type', 'text/html')])
-        # with open('/app/src/pages/main_page/page_main.html', 'r') as index:
-        #     reading = index.read()
-        #     return [reading.encode()]
         result_page = jinja2_result_main_page.generate_result_main_page()
         return [result_page.encode()]
 
@@ -151,3 +148,8 @@ def application(env, start_response):
             start_match_score_data_handler.redirect_not_win_conf(id_current_match, score_player_1_object,
                                                                  score_player_2_object)
             start_response('302 Found', [('Location', f'/match_score?uuid={id_current_match}')])
+
+    else:
+        page_not_found = '404, Page Not Found'
+        start_response('404 Not Found', [('Content-Type', 'text/plain')])
+        return [page_not_found.encode()]
