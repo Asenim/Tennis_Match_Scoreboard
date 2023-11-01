@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
-<head>
-    <link rel="stylesheet" href="style_new_match.css">
-    <meta charset="UTF-8">
-    <title>New Match</title>
-</head>
-<body>
+{% extends 'html_samples.html' %}
+
+{% block link %}
+<link rel="stylesheet" href="style_new_match.css">
+{% endblock %}
+
+{% block title %}
+New Match
+{% endblock %}
+
+{% block body %}
     <h1 class="new_match"> This is the page to start a new match </h1>
     <h2 class="name_players"> Enter player names </h2>
      <form method="post" name="NewMatchForm" action="http://localhost:8080/new_match_data_insert">
@@ -31,5 +34,4 @@
             <p><a class="button_redirect" href="http://localhost:8080"> Back to main page </a></p>
         </div>
     </form>
-</body>
-</html>
+{% endblock %}

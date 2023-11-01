@@ -21,8 +21,8 @@ class NewMatchDataInsert:
         player1_obj_score = PlayerScore(player1_obj)
         player2_obj_score = PlayerScore(player2_obj)
         # Данные переводятся в формат json
-        run_class_object_to_json = ObjectToJsonToDB(player1_obj_score, player2_obj_score)
-        data_object_to_json = run_class_object_to_json.object_to_json()
+        run_class_object_to_json = ObjectToJsonToDB()
+        data_object_to_json = run_class_object_to_json.object_to_json(player1_obj_score, player2_obj_score)
         print(data_object_to_json)
         print(type(data_object_to_json))
         # Обновляются данные в БД

@@ -16,7 +16,5 @@ def generate_sample_new_match(displayable_pages):
     )
 
     loading_page = env.get_template(displayable_pages)
-    # my_object - это имя объекта в html странице который будет отображаться
-    # с помощью шаблонизатора.
     result_page = loading_page.render()
     return result_page

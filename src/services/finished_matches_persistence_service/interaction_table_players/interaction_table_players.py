@@ -39,23 +39,28 @@ class InteractionTablePlayers(InteractionTableABS):
     def delete_one_player(name=None, uniq_id=None):
         """
         Функция будет удалять игроков из таблицы players
+        Функция не используется в проекте.
         :return:
         """
         session = Session(bind=engine)
         try:
             if uniq_id is not None:
-                __player = session.query(Player).filter(Player.ID == uniq_id).one()
-
-                session.delete(__player)
-                session.commit()
-                print(f"Data {__player.ID, __player.Name} deleted!")
+                __player = session.query(Player).filter_by(Player.ID == uniq_id).one()
+                if __player:
+                    session.delete(__player)
+                    session.commit()
+                    print(f"Data {__player.ID, __player.Name} deleted!")
+                else:
+                    print('Object is none in db')
 
             else:
-                __player = session.query(Player).filter(Player.Name == name).one()
-
-                session.delete(__player)
-                session.commit()
-                print(f"Data {__player.ID, __player.Name} deleted!")
+                __player = session.query(Player).filter_by(Player.Name == name).one()
+                if __player:
+                    session.delete(__player)
+                    session.commit()
+                    print(f"Data {__player.ID, __player.Name} deleted!")
+                else:
+                    print('Object is none in db')
 
         except ConnectionError:
             print("Failed to connect to database")

@@ -1,12 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<link rel="stylesheet" href="style_match_score_calculation.css">
-<head>
-    <meta charset="UTF-8">
-    <title> Match score calculation </title>
-</head>
-<body>
+{% extends 'html_samples.html' %}
 
+{% block link %}
+    <link rel="stylesheet" href="style_match_score_calculation.css">
+{% endblock %}
+
+{% block title %}
+    Match score calculation
+{% endblock %}
+
+{% block body %}
     <div class="name_page">
         <h1 class="main_name_page"> Score Board </h1>
     </div>
@@ -51,6 +53,4 @@
 
         </div>
     </form>
-
-</body>
-</html>
+{% endblock %}

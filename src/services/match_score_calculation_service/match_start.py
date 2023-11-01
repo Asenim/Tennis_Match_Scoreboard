@@ -5,7 +5,8 @@ from src.services.match_score_calculation_service.match_score_logic.tennis_tiebr
 
 
 class MatchStart:
-    def __init__(self, id_match, player1_object_model, player2_object_model, player1_score, player2_score, point_win_request):
+    def __init__(self, id_match, player1_object_model, player2_object_model, player1_score,
+                 player2_score, point_win_request):
         """
         Класс запускает логику приложения
         :param id_match: id матча подсчет которого производится в данный момент

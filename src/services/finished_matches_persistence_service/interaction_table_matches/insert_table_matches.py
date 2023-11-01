@@ -57,8 +57,6 @@ class InsertTableMatches(InteractionTableMatchesABS):
         except ConnectionError:
             print("Failed to connect to database")
         finally:
-            # session.commit()
-            # print("Data added to db")
             session.close()
             print("Session closed!")
 
@@ -90,7 +88,5 @@ class InsertTableMatches(InteractionTableMatchesABS):
         except ConnectionError:
             print("Failed to connect to database")
         finally:
-            # session.commit()
-            # print("Data added to db")
             session.close()
             print("Session closed!")

@@ -5,7 +5,6 @@ from sqlalchemy import func
 
 
 class SelectTableMatches(InteractionTableMatchesABS):
-    # @staticmethod
     def select_all(self, param_offset, param_limit):
         """
         Метод выбирает все матчи из таблицы
@@ -137,18 +136,15 @@ class SelectTableMatches(InteractionTableMatchesABS):
     def select_last_record():
         """
         Получение последней записи из таблицы Matches
-        :return: ID последней записи (ВНИМАНИЕ! Возвращается прям ID в
+        :return: ID последней записи (ВНИМАНИЕ! Возвращается ID в
             виде целого ЧИСЛА, не ОБЪЕКТ)
         """
         session = Session(bind=engine)
 
         try:
-            record_object = session.query(func.max(Match.ID)).scalar()
-            # list_result = self.result_matches(record_object)
+            record_object_id = session.query(func.max(Match.ID)).scalar()
 
-            # Выводим в консоль и возвращаем корректный список
-            # self.output_console_list_result(list_result)
-            return record_object
+            return record_object_id
 
         except ConnectionError:
             print("Connecting Error")

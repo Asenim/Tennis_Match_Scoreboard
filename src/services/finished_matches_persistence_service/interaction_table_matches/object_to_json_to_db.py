@@ -4,24 +4,22 @@ from src.services.finished_matches_persistence_service.interaction_table_matches
 
 
 class ObjectToJsonToDB:
-    def __init__(self, object_player_1=None, object_player_2=None):
+    def __init__(self):
         """
         Класс нужен для сериализации объектов в JSON и
         наоборот, он помогает сохранять счет матча
-        :param object_player_1:
-        :param object_player_2:
         """
-        self.object_player_1 = object_player_1
-        self.object_player_2 = object_player_2
+        pass
 
-    def object_to_json(self):
+    @staticmethod
+    def object_to_json(object_player_1, object_player_2):
         """
         Получаем JSON объект из наших данных для дальнейшей передачи в БД
         :return: json object
         """
-        if self.object_player_1 is not None and self.object_player_2 is not None:
-            data_players_score = {'player_1': self.object_player_1.__dict__,
-                                  'player_2': self.object_player_2.__dict__}
+        if object_player_1 is not None and object_player_2 is not None:
+            data_players_score = {'player_1': object_player_1.__dict__,
+                                  'player_2': object_player_2.__dict__}
 
             dict_to_json_players_score = json.dumps(data_players_score)
             return dict_to_json_players_score

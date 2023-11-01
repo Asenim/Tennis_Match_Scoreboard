@@ -5,6 +5,8 @@ from src.services.finished_matches_persistence_service.interaction_table_players
 from src.services.finished_matches_persistence_service.interaction_table_matches.object_to_json_to_db \
     import ObjectToJsonToDB
 from src.services.match_score_calculation_service.match_start import MatchStart
+from src.services.finished_matches_persistence_service.interaction_table_matches.insert_table_matches \
+    import InsertTableMatches
 
 
 class MatchScoreDataHandler:
@@ -12,6 +14,7 @@ class MatchScoreDataHandler:
         self.run_class_select_table_matches = SelectTableMatches()
         self.run_class_select_players = SelectInteractionTablePlayers()
         self.run_class_object_to_json = ObjectToJsonToDB()
+        self.run_class_insert_table_matches = InsertTableMatches()
 
     def treatment_match_score_data(self, post_request_data):
         # Получаем id текущего матча
@@ -51,3 +54,14 @@ class MatchScoreDataHandler:
         score_player_2_object = start_count_score[1]
 
         return [score_player_1_object, score_player_2_object, id_current_match]
+
+    def redirect_win_conf(self, id_current_match, player_object_1, player_object_2, score_player_object_for_update):
+        new_json_data = self.run_class_object_to_json.object_to_json(player_object_1, player_object_2)
+        self.run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
+
+        self.run_class_insert_table_matches.insert_winner_player_id(id_current_match,
+                                                                    score_player_object_for_update.player_ID)
+
+    def redirect_not_win_conf(self, id_current_match, player_object_1, player_object_2):
+        new_json_data = self.run_class_object_to_json.object_to_json(player_object_1, player_object_2)
+        self.run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)

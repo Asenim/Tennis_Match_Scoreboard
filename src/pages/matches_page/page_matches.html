@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<link rel="stylesheet" href="matches_style.css">
-<head>
-    <meta charset="UTF-8">
-    <title> Match page </title>
-</head>
-<body>
+{% extends 'html_samples.html' %}
+
+{% block link %}
+    <link rel="stylesheet" href="matches_style.css">
+{% endblock %}
+
+{% block title %}
+    Match page
+{% endblock %}
+
+{% block body %}
     <div class="main_description">
         <h1 class="description"> Match page </h1>
         <h2 class="description">
@@ -51,5 +54,4 @@
         <a class="button_backs" href="http://localhost:8080"> Back to main page </a>
     </form>
 
-</body>
-</html>
+{% endblock %}

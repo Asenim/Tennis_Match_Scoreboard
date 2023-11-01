@@ -1,17 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'html_samples.html' %}
+
+{% block link %}
 <link rel="stylesheet" href="style_main.css">
-<head>
-    <meta charset="UTF-8">
-    <title>Tennis ball scoreboard</title>
-</head>
-<body>
-    <h1 class="welcome">Welcome my tennis ball scoreboard</h1>
+{% endblock %}
+
+{% block title %}
+Tennis ball scoreboard
+{% endblock %}
+
+{% block body %}
+<h1 class="welcome">Welcome my tennis ball scoreboard</h1>
     <form>
         <a class="button" href="/new-match"> New Match </a>
     </form>
     <form>
         <a class="button" href="/matches"> List of Completed Match </a>
     </form>
-</body>
-</html>
+{% endblock %}

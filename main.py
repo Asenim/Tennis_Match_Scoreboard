@@ -4,15 +4,12 @@ import wsgiref.simple_server
 import wsgiref.util
 # Импорт шаблонов
 from src.samples.new_match_samples import jinja2_result_new_match
+from src.samples.main_page_samples import jinja2_result_main_page
 # Импорт для работы роутинга
 from src.services.server_configuration.match_score_url_conf import MatchScoreUrlConf
 from src.services.server_configuration.matches_url_config import MatchesUrlConfig
 from src.services.server_configuration.new_match_data_insert import NewMatchDataInsert
 from src.services.server_configuration.match_score_data_handler import MatchScoreDataHandler
-from src.services.finished_matches_persistence_service.interaction_table_matches.insert_table_matches \
-    import InsertTableMatches
-from src.services.finished_matches_persistence_service.interaction_table_matches.object_to_json_to_db \
-    import ObjectToJsonToDB
 
 
 def application(env, start_response):
@@ -27,9 +24,11 @@ def application(env, start_response):
     # Главная страница
     if url == '':
         start_response('200 OK', [('Content-Type', 'text/html')])
-        with open('/app/src/pages/main_page/page_main.html', 'r') as index:
-            reading = index.read()
-            return [reading.encode()]
+        # with open('/app/src/pages/main_page/page_main.html', 'r') as index:
+        #     reading = index.read()
+        #     return [reading.encode()]
+        result_page = jinja2_result_main_page.generate_result_main_page()
+        return [result_page.encode()]
 
     if url == 'style_main.css':
         start_response('200 OK', [('Content-Type', 'text/css')])
@@ -129,36 +128,26 @@ def application(env, start_response):
         str_request_body = str(request_body)
         # Убираем лишние символы из строки и разбиваем ее
         post_data = str_request_body.replace("'", "").split('&')
-        start_match_score_data_handler = MatchScoreDataHandler
-        list_data = start_match_score_data_handler.treatment_match_score_data(post_data)
+        start_match_score_data_handler = MatchScoreDataHandler()
+        list_data = start_match_score_data_handler.treatment_match_score_data(post_request_data=post_data)
         score_player_1_object = list_data[0]
         score_player_2_object = list_data[1]
         id_current_match = list_data[2]
-
-        run_new_data_is_object_to_json = ObjectToJsonToDB(score_player_1_object, score_player_2_object)
-        run_class_insert_table_matches = InsertTableMatches()
-
         # Производим redirect
         # Если выиграл игрок 1
         if score_player_1_object.game_set >= 3:
-
-            new_json_data = run_new_data_is_object_to_json.object_to_json()
-            run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
-
-            run_class_insert_table_matches.insert_winner_player_id(id_current_match, score_player_1_object.player_ID)
+            start_match_score_data_handler.redirect_win_conf(id_current_match, score_player_1_object,
+                                                             score_player_2_object, score_player_1_object)
             start_response('302 Found', [('Location', f"/matches?page=1")])
 
         # Если выиграл игрок 2
         elif score_player_2_object.game_set >= 3:
-            new_json_data = run_new_data_is_object_to_json.object_to_json()
-            run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
-
-            run_class_insert_table_matches.insert_winner_player_id(id_current_match, score_player_2_object.player_ID)
+            start_match_score_data_handler.redirect_win_conf(id_current_match, score_player_1_object,
+                                                             score_player_2_object, score_player_2_object)
             start_response('302 Found', [('Location', f"/matches?page=1")])
 
         # Пока никто не выиграл
         else:
-            new_json_data = run_new_data_is_object_to_json.object_to_json()
-            run_class_insert_table_matches.update_score_match(id_current_match, new_json_data)
-
+            start_match_score_data_handler.redirect_not_win_conf(id_current_match, score_player_1_object,
+                                                                 score_player_2_object)
             start_response('302 Found', [('Location', f'/match_score?uuid={id_current_match}')])
