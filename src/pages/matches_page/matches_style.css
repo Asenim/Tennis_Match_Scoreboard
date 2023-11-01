@@ -127,12 +127,23 @@
     text-align: center;
     margin-right: auto;
     margin-left: auto;
+    margin-top: 4%;
+    padding-top: 5%;
+    padding-bottom: 5%;
 }
+
+.table_header_row {
+    background-color: green;
+    color: white;
+}
+
 .my_table_row {
+    background-color: lightgreen;
 }
+
 .my_table_cell {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 40px;
+    margin-right: 40px;
 
     padding-left: 20px;
     padding-right: 20px;

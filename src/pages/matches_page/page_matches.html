@@ -29,16 +29,23 @@
     </form>
 
     <form class="python_window">
-        {% for match in all_match -%}
         <div style="display: table" class="my_table">
-            <div style="display: table-row" class="my_table_row">
-                <div style="display: table-cell" class="my_table_cell"> {{match.0}} </div>
-                <div style="display: table-cell" class="my_table_cell"> {{match.1}} </div>
-                <div style="display: table-cell" class="my_table_cell"> {{match.2}} </div>
-                <div style="display: table-cell" class="my_table_cell"> {{match.3}} </div>
+            <div style="display: table-row" class="table_header_row">
+                <div style="display: table-cell" class="my_table_cell"> Match ID </div>
+                <div style="display: table-cell" class="my_table_cell"> Player 1 Name </div>
+                <div style="display: table-cell" class="my_table_cell"> Player 2 Name </div>
+                <div style="display: table-cell" class="my_table_cell"> Winner Match </div>
             </div>
+            {% for match in all_match -%}
+                <div style="display: table-row" class="my_table_row">
+                    <div style="display: table-cell" class="my_table_cell"> {{match.0}} </div>
+                    <div style="display: table-cell" class="my_table_cell"> {{match.1}} </div>
+                    <div style="display: table-cell" class="my_table_cell"> {{match.2}} </div>
+                    <div style="display: table-cell" class="my_table_cell"> {{match.3}} </div>
+                </div>
+            {% endfor -%}
         </div>
-        {% endfor -%}
+
 
     </form>
 
