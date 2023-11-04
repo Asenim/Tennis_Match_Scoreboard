@@ -44,6 +44,12 @@ class NewMatchDataInsert:
         # Отделяем игроков друг от друга для дальнейшей обработки
         post_data_player_1 = post_data[0]
         post_data_player_2 = post_data[1]
+        post_data_player_1 = self.__post_conversion_plus_is_spase(post_data_player_1)
+        post_data_player_2 = self.__post_conversion_plus_is_spase(post_data_player_2)
+        # if '+' in post_data_player_1:
+        #     post_data_player_1 = post_data_player_1.replace('+', ' ')
+        # if '+' in post_data_player_2:
+        #     post_data_player_2 = post_data_player_2.replace('+', ' ')
         # ong = OngoingMatchesService()
         print('post_data', post_data, 'player_1', post_data_player_1, 'player_2', post_data_player_2)
         # Вытаскиваем имена игроков
@@ -51,8 +57,8 @@ class NewMatchDataInsert:
         list_player_1 = post_data_player_1.split('=')
         list_player_2 = post_data_player_2.split('=')
         # Вытаскиваем из списков имена и убираем лишние пробелы
-        player_1_name = list_player_1[1].replace(' ', '')
-        player_2_name = list_player_2[1].replace(' ', '')
+        player_1_name = list_player_1[1].strip()
+        player_2_name = list_player_2[1].strip()
         # Добавляем игроков в Таблицу Players
         player_1_obj = self.interaction_table_players.insert_one_player_and_return_player_object(player_1_name)
         player_2_obj = self.interaction_table_players.insert_one_player_and_return_player_object(player_2_name)
@@ -67,3 +73,14 @@ class NewMatchDataInsert:
             player_2_obj,
             id_insert_match
         ]
+
+    @staticmethod
+    def __post_conversion_plus_is_spase(post_data_player):
+        """
+        Заменяем '+' в строке на ' '
+        :param post_data_player: строка содержащая имя игрока
+        """
+        if '+' in post_data_player:
+            post_data_player = post_data_player.replace('+', ' ')
+
+        return post_data_player
