@@ -50,12 +50,38 @@
     font-size: 1.5em;
 }
 
+.row_a_button {
+    margin-right: 36%;
+    margin-left: 36%;
+    display: flex;
+}
+
 .cell_a_button {
     text-align: center;
-    margin: auto;
-    display: block;
+    border: 1px solid blue;
+    margin: 2px;
+    display: inline-block;
     font-size: 1.2em;
+}
 
+.button_player {
+    text-align: center;
+    background-color: crimson;
+    color: aliceblue;
+    padding: 15px;
+    min-width: 200px;
+}
+
+.button_player:hover {
+    background-color: greenyellow;
+    color: black;
+    -webkit-transition: all .3ms linear;
+    -moz-transition: all .3ms linear;
+}
+
+.button_player:active {
+    background-color: green;
+    color: aqua;
 }
 
 body {

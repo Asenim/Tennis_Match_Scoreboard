@@ -15,7 +15,8 @@ from src.services.server_configuration.match_score_data_handler import MatchScor
 def application(env, start_response):
     string_url = wsgiref.util.request_uri(env, include_query=True)
     # Получение данных из Post Запроса
-    request_body = env.get('wsgi.input').read().decode('utf-8')
+    # request_body = env.get('wsgi.input').read().decode('utf-8')
+    request_body = env['wsgi.input'].read().decode('utf-8')
     print('----------')
     print('request_body', request_body)
     print('----------')
@@ -31,7 +32,7 @@ def application(env, start_response):
         start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
         with open('/app/src/pages/main_page/style_main.css', 'r') as index:
             reading = index.read()
-            return [reading.encode()]
+            return [reading.encode('utf-8')]
 
     # Страница завершенных матчей
     get_url = url.split('?')
@@ -41,7 +42,7 @@ def application(env, start_response):
 
         if len(get_url) == 1:
             result = match_url_config.page_formation_for_all_matches()
-            return [result.encode()]
+            return [result.encode('utf-8')]
 
         # Если есть get параметры
         elif len(get_url) > 1:
@@ -53,7 +54,7 @@ def application(env, start_response):
 
                 if get_data[0] == 'page':
                     result = match_url_config.page_formation_for_all_matches(page=get_data[1])
-                    return [result.encode()]
+                    return [result.encode('utf-8')]
 
                 elif get_data[0] == 'filter_by_name':
                     # Если имя пустое
@@ -61,7 +62,7 @@ def application(env, start_response):
                         start_response('302 Found', [('Location', f'/matches')])
 
                     result = match_url_config.page_formation_for_search_player(name=get_data[1])
-                    return [result.encode()]
+                    return [result.encode('utf-8')]
 
             # Если get param 2 и более
             elif len(get_param) >= 2:
@@ -71,25 +72,25 @@ def application(env, start_response):
                 search_player = get_param[1].split('=')
 
                 result = match_url_config.page_formation_for_search_player(page=get_data[1], name=search_player[1])
-                return [result.encode()]
+                return [result.encode('utf-8')]
 
     if url == 'matches_style.css':
         start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
         with open('/app/src/pages/matches_page/matches_style.css', 'r') as matches:
             reading = matches.read()
-            return [reading.encode()]
+            return [reading.encode('utf-8')]
 
     # Страница нового матча
     if url == 'new-match':
         start_response('200 OK', [('Content-Type', 'text/html;charset=utf-8')])
         result_page = jinja2_result_new_match.generate_result_new_match()
-        return [result_page.encode()]
+        return [result_page.encode('utf-8')]
 
     if url == 'style_new_match.css':
         start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
         with open('/app/src/pages/new_match_page/style_new_match.css', 'r') as style_new_match:
             reading = style_new_match.read()
-            return [reading.encode()]
+            return [reading.encode('utf-8')]
 
     # Страница подсчета матча
     get_url = url.split('?')
@@ -102,13 +103,13 @@ def application(env, start_response):
         match_score_url_conf = MatchScoreUrlConf()
 
         result_page = match_score_url_conf.page_formation_for_match_score(id_matches)
-        return [result_page.encode()]
+        return [result_page.encode('utf-8')]
 
     if url == 'style_match_score_calculation.css':
         start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
         with open('/app/src/pages/match_score_page/style_match_score_calculation.css', 'r') as style_score_match:
             reading = style_score_match.read()
-            return [reading.encode()]
+            return [reading.encode('utf-8')]
 
     # Обработка данных со страницы начала матча
     if url == 'new_match_data_insert':
@@ -155,4 +156,4 @@ def application(env, start_response):
                    'matches', 'style_main.css', '']:
         page_not_found = '404, Страницы не существует'
         start_response('404 Not Found', [('Content-Type', 'text/plain;charset=utf-8')])
-        return [page_not_found.encode()]
+        return [page_not_found.encode('utf-8')]

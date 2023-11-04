@@ -37,17 +37,16 @@
 
             <input type="hidden" name="id" value="{{id}}">
 
-            <div style="display: table-row">
-                <div style="display: table-cell"></div>
-                <div style="display: table-cell" class="cell_a_button">
-                    <button name="player1win" value="1" type="submit"> {{p1_dis_name}} Win </button>
-                </div>
-                <div style="display: table-cell" class="cell_a_button">
-                    <button name="player2win" value="2" type="submit"> {{p2_dis_name}} Win</button>
-                </div>
-                <div style="display: table-cell"></div>
-            </div>
-
         </div>
+
+        <div class="row_a_button">
+            <div class="cell_a_button">
+                <button name="player1win" value="1" type="submit" class="button_player"> {{p1_dis_name}} Win </button>
+            </div>
+            <div class="cell_a_button">
+                <button name="player2win" value="2" type="submit" class="button_player"> {{p2_dis_name}} Win</button>
+            </div>
+        </div>
+
     </form>
 {% endblock %}
