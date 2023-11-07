@@ -1,12 +1,12 @@
-version: '3'
+version: '3.9'
 services:
   app_in_ubuntu:
     build: .
-#    image: tennis_ball_scoreboard_project_in_ubuntu
     ports:
       - "8080:80"
     depends_on:
-      - my_sql_db
+      my_sql_db:
+        condition: service_started
 
   my_sql_db:
     image: mysql
