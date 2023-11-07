@@ -1,13 +1,25 @@
-# Команда для билда - docker build . -t main_image_app
-# Команда для запуска - docker run --name my_server_machine -it -p 8080:80 -v откуда:куда id_images
+# Команда для билда - docker build . -t tennis_ball_scoreboard_project_in_ubuntu
+# Команда для запуска -
+#   docker run --name my_server_ubuntu_container -it -p 8080:80 -v C:\ArhitectFiles\PythonProjects\Tennis_ball_scoreboard:/app tennis_ball_scoreboard_project_in_ubuntu
+# Команда для тестов -
+#   docker run --name my_server_ubuntu_container2 --rm -it -p 8080:80 -v C:\ArhitectFiles\PythonProjects\Tennis_ball_scoreboard:/app tennis_ball_scoreboard_project_in_ubuntu
+# Основная команда для запуска контейнера с полностью готовым проектом -
+#   docker run --name my_server_ubuntu_container -it -p 8080:80 tennis_ball_scoreboard_project_in_ubuntu
 
-FROM tecktron/python-waitress:latest
+FROM ubuntu
 
 WORKDIR /app
 
 COPY . .
 
+RUN apt update
+RUN apt upgrade -y
+
+RUN apt install python3 -y
+RUN apt install pip -y
+
 RUN pip install --upgrade pip
+RUN pip install uwsgi
 RUN pip install -r requirements.txt
-RUN mv wsgi.py wsgi1.py
-RUN mv main_deactivate.py wsgi.py
+
+ENTRYPOINT ["./entrypoint.sh"]
