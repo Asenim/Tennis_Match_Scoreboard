@@ -7,6 +7,7 @@ services:
     depends_on:
       my_sql_db:
         condition: service_started
+    restart: always
 
   my_sql_db:
     image: mysql

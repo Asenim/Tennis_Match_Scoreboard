@@ -22,4 +22,5 @@ RUN pip install --upgrade pip
 RUN pip install uwsgi
 RUN pip install -r requirements.txt
 
+RUN chmod -R +x /app
 ENTRYPOINT ["./entrypoint.sh"]
