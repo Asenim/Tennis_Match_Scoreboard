@@ -10,6 +10,7 @@ from src.services.server_configuration.match_score_url_conf import MatchScoreUrl
 from src.services.server_configuration.matches_url_config import MatchesUrlConfig
 from src.services.server_configuration.new_match_data_insert import NewMatchDataInsert
 from src.services.server_configuration.match_score_data_handler import MatchScoreDataHandler
+from config_env import YOUR_IP_ADDR
 
 
 def application(env, start_response):
@@ -36,7 +37,7 @@ def application(env, start_response):
 
     # Страница завершенных матчей
     get_url = url.split('?')
-    match_url_config = MatchesUrlConfig()
+    match_url_config = MatchesUrlConfig(YOUR_IP_ADDR)
     if get_url[0] == 'matches':
         start_response('200 OK', [('Content-Type', 'text/html;charset=utf-8')])
 

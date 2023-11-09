@@ -5,13 +5,14 @@ from src.samples.result_matches_samples import jinja2_result_page_matches
 
 
 class MatchesUrlConfig:
-    def __init__(self):
+    def __init__(self, ip_addr):
         """
         Этот класс нужен для конфигурации url
         /matches, а точнее для обратки get аргументов и
         формирования страниц
         """
         self.start_select_matches = SelectTableMatches()
+        self.IP_ADDR = ip_addr
 
     def page_formation_for_all_matches(self, page=None):
         """
@@ -35,7 +36,8 @@ class MatchesUrlConfig:
         result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
                                                                          count_number=quantity_pages,
                                                                          page_num=data_for_pages['page'],
-                                                                         pl_name=data_for_pages['name'])
+                                                                         pl_name=data_for_pages['name'],
+                                                                         your_ip=self.IP_ADDR)
 
         return result
 
@@ -62,7 +64,8 @@ class MatchesUrlConfig:
         result = jinja2_result_page_matches.generate_result_page_matches(results=all_matches,
                                                                          count_number=quantity_pages,
                                                                          page_num=data_for_pages['page'],
-                                                                         pl_name=data_for_pages['name'])
+                                                                         pl_name=data_for_pages['name'],
+                                                                         your_ip=self.IP_ADDR)
         return result
 
     @staticmethod

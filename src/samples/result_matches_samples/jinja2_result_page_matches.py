@@ -1,7 +1,7 @@
 from src.samples.result_matches_samples import jinja2_sample_matches
 
 
-def generate_result_page_matches(results, count_number, page_num, pl_name):
+def generate_result_page_matches(results, count_number, page_num, pl_name, your_ip):
     """
     Генерирует статичную страницу
     с данными из таблицы.
@@ -9,5 +9,6 @@ def generate_result_page_matches(results, count_number, page_num, pl_name):
     """
 
     result = jinja2_sample_matches.generate_sample_matches(all_matches=results, count_page_num=count_number,
-                                                           page_num=page_num, player_name=pl_name, displayable_pages='/matches_page/page_matches.html')
+                                                           page_num=page_num, player_name=pl_name, your_ip=your_ip,
+                                                           displayable_pages='/matches_page/page_matches.html')
     return result
