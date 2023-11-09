@@ -11,7 +11,7 @@ New Match
 {% block body %}
     <h1 class="new_match"> This is the page to start a new match </h1>
     <h2 class="name_players"> Enter player names </h2>
-     <form method="post" name="NewMatchForm" action="http://localhost:8080/new_match_data_insert">
+     <form method="post" name="NewMatchForm" action="http://{{ your_ip }}:8080/new_match_data_insert">
         <div>
             <p>
                 <label for="Player1"> Player 1 <br>
@@ -31,7 +31,7 @@ New Match
         </div>
 
         <div>
-            <p><a class="button_redirect" href="http://localhost:8080"> Back to main page </a></p>
+            <p><a class="button_redirect" href="http://{{ your_ip }}:8080"> Back to main page </a></p>
         </div>
     </form>
 {% endblock %}

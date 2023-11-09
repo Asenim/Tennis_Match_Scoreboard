@@ -84,7 +84,7 @@ def application(env, start_response):
     # Страница нового матча
     if url == 'new-match':
         start_response('200 OK', [('Content-Type', 'text/html;charset=utf-8')])
-        result_page = jinja2_result_new_match.generate_result_new_match()
+        result_page = jinja2_result_new_match.generate_result_new_match(your_ip=YOUR_IP_ADDR)
         return [result_page.encode('utf-8')]
 
     if url == 'style_new_match.css':

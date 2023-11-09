@@ -1,13 +1,14 @@
 import jinja2
 
 
-def generate_sample_calculation(player_1_object, player_2_object, id_match, displayable_pages):
+def generate_sample_calculation(player_1_object, player_2_object, id_match, your_ip, displayable_pages):
     """
     Метод Вставляет необходимые данные в шаблон страницы
     и отдает результат
     :param player_1_object: объект класса PlayerScore (Счета игрока 1)
     :param player_2_object: объект класса PlayerScore (Счета игрока 2)
     :param id_match: id текущего матча
+    :param your_ip: IP из файла .env
     :param displayable_pages: Сама отображаемая страница.
         /app/src/pages
     :return:
@@ -50,7 +51,8 @@ def generate_sample_calculation(player_1_object, player_2_object, id_match, disp
                                           p2_dis_game=p2_game,
                                           p2_dis_set=p2_set,
                                           id=id_match,
-                                          handler_game=game_hand
+                                          handler_game=game_hand,
+                                          your_ip=your_ip
                                           )
 
     elif p1_game == 6 and p2_game == 6:
@@ -63,7 +65,8 @@ def generate_sample_calculation(player_1_object, player_2_object, id_match, disp
                                           p2_dis_game=p2_tiebreak,
                                           p2_dis_set=p2_set,
                                           id=id_match,
-                                          handler_game=tie_break_hand
+                                          handler_game=tie_break_hand,
+                                          your_ip=your_ip
                                           )
 
     else:
@@ -76,7 +79,8 @@ def generate_sample_calculation(player_1_object, player_2_object, id_match, disp
                                           p2_dis_game=p2_game,
                                           p2_dis_set=p2_set,
                                           id=id_match,
-                                          handler_game=game_hand
+                                          handler_game=game_hand,
+                                          your_ip=your_ip
                                           )
 
     return result_page

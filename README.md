@@ -17,6 +17,7 @@
       1. DB_USER - логин
       2. DB_PASS - пароль
       3. DB_HOST - my_sql_db
+      4. YOUR_IP_ADDR - localhost или 127.0.0.1
 4. Выполните команду docker-compose up
 
 ### Развернуть на сервере Linux ###
@@ -24,10 +25,11 @@
 2. Используйте команду <code> git clone https://github.com/Asenim/Tennis_Ball_Scoreboard.git </code> для клонирования проекта
 3. Найдите файл ___".env_sample"___ и следуйте инструкциям ниже
    1. Переименуйте файл ___".env_sample"___ в ___".env"___ 
-   2. Пропишите данные вашей БД
+   2. Пропишите данные вашей БД и IP адрес который вы будете использовать для перехода по ссылкам
       1. DB_USER - логин
       2. DB_PASS - пароль
       3. DB_HOST - my_sql_db
+      4. YOUR_IP_ADDR - IP вашего сервера
 4. (Далее инструкция для Ubuntu 22.04) Нам нужно установить композ версии v2.23.0
 5. <code>mkdir -p ~/.docker/cli-plugins/</code>
 6. <code>curl -SL https://github.com/docker/compose/releases/download/v2.23.0/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose</code>
