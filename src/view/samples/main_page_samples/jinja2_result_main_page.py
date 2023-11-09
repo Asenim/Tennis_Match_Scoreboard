@@ -1,4 +1,4 @@
-from src.samples.main_page_samples.jinja2_sample_main_page import generate_sample_main_page
+from src.view.samples.main_page_samples.jinja2_sample_main_page import generate_sample_main_page
 
 
 def generate_result_main_page():

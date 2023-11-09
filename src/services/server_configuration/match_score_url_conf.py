@@ -5,7 +5,7 @@ from src.services.finished_matches_persistence_service.interaction_table_matches
 from src.services.finished_matches_persistence_service.interaction_table_players.select_table_players \
     import SelectInteractionTablePlayers
 from src.services.match_score_calculation_service.match_score_logic.player_score import PlayerScore
-from src.samples.match_calculation_samples import jinja2_result_page_calculation
+from src.view.samples.match_calculation_samples import jinja2_result_page_calculation
 
 
 class MatchScoreUrlConf:

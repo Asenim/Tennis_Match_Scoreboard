@@ -1,7 +1,7 @@
 from src.services.finished_matches_persistence_service.interaction_table_matches.select_table_matches \
     import SelectTableMatches
 import math
-from src.samples.result_matches_samples import jinja2_result_page_matches
+from src.view.samples.result_matches_samples import jinja2_result_page_matches
 
 
 class MatchesUrlConfig:

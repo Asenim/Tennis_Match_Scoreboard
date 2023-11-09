@@ -12,7 +12,7 @@ def generate_sample_new_match(your_ip, displayable_pages):
     """
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(
-            '/app/src/pages'
+            '/app/src/view/pages'
         )
     )
 

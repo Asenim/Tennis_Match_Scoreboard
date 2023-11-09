@@ -4,6 +4,18 @@
 #### Python версия ТЗ - https://github.com/zhukovsd/python-backend-learning-course/blob/main/Projects/TennisScoreboard/index.md ####
 
 ## Используемые технологии ##
+- Python3
+- uwsgi: В качестве Веб сервера
+- dotenv: Для переменных окружения
+- pytest: Тестирование
+- VDS Linux Ubuntu
+- Docker и Docker-Compose: для развертывания и деплоя
+- Jinja2: в качестве Шаблонизатора
+- HTML and CSS: для оформления
+- alembic: для миграций
+- sqlalchemy: ORM для манипуляций с БД
+- MySQL: в качестве базы данных
+- Архитектурный паттерн MVCS
 
 ## Описание проекта ##
 

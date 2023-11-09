@@ -3,8 +3,8 @@ import wsgiref.handlers
 import wsgiref.simple_server
 import wsgiref.util
 # Импорт шаблонов
-from src.samples.new_match_samples import jinja2_result_new_match
-from src.samples.main_page_samples import jinja2_result_main_page
+from src.view.samples.new_match_samples import jinja2_result_new_match
+from src.view.samples.main_page_samples import jinja2_result_main_page
 # Импорт для работы роутинга
 from src.services.server_configuration.match_score_url_conf import MatchScoreUrlConf
 from src.services.server_configuration.matches_url_config import MatchesUrlConfig
@@ -31,7 +31,7 @@ def application(env, start_response):
 
     if url == 'style_main.css':
         start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
-        with open('/app/src/pages/main_page/style_main.css', 'r') as index:
+        with open('/app/src/view/pages/main_page/style_main.css', 'r') as index:
             reading = index.read()
             return [reading.encode('utf-8')]
 
@@ -77,7 +77,7 @@ def application(env, start_response):
 
     if url == 'matches_style.css':
         start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
-        with open('/app/src/pages/matches_page/matches_style.css', 'r') as matches:
+        with open('/app/src/view/pages/matches_page/matches_style.css', 'r') as matches:
             reading = matches.read()
             return [reading.encode('utf-8')]
 
@@ -89,7 +89,7 @@ def application(env, start_response):
 
     if url == 'style_new_match.css':
         start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
-        with open('/app/src/pages/new_match_page/style_new_match.css', 'r') as style_new_match:
+        with open('/app/src/view/pages/new_match_page/style_new_match.css', 'r') as style_new_match:
             reading = style_new_match.read()
             return [reading.encode('utf-8')]
 
@@ -108,7 +108,7 @@ def application(env, start_response):
 
     if url == 'style_match_score_calculation.css':
         start_response('200 OK', [('Content-Type', 'text/css;charset=utf-8')])
-        with open('/app/src/pages/match_score_page/style_match_score_calculation.css', 'r') as style_score_match:
+        with open('/app/src/view/pages/match_score_page/style_match_score_calculation.css', 'r') as style_score_match:
             reading = style_score_match.read()
             return [reading.encode('utf-8')]
 

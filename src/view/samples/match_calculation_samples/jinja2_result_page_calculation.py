@@ -1,4 +1,4 @@
-from src.samples.match_calculation_samples.jinja2_sample_calculation \
+from src.view.samples.match_calculation_samples.jinja2_sample_calculation \
     import generate_sample_calculation
 
 

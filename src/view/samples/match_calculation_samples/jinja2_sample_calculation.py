@@ -15,7 +15,7 @@ def generate_sample_calculation(player_1_object, player_2_object, id_match, your
     """
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(
-            '/app/src/pages'
+            '/app/src/view/pages'
         )
     )
     """ Идея - обратиться к полям объекта игроков и пердавать даные полей """

@@ -4,7 +4,7 @@ import jinja2
 def generate_sample_main_page(displayable_pages):
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(
-            '/app/src/pages'
+            '/app/src/view/pages'
         )
     )
 

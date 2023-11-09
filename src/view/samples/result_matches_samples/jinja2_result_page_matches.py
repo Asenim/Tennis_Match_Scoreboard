@@ -1,4 +1,4 @@
-from src.samples.result_matches_samples import jinja2_sample_matches
+from src.view.samples.result_matches_samples import jinja2_sample_matches
 
 
 def generate_result_page_matches(results, count_number, page_num, pl_name, your_ip):

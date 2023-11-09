@@ -16,7 +16,7 @@ def generate_sample_matches(all_matches, count_page_num, page_num, player_name, 
     """
     env = jinja2.Environment(
         loader=jinja2.FileSystemLoader(
-            '/app/src/pages'
+            '/app/src/view/pages'
         )
     )
 
