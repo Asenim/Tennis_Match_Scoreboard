@@ -101,7 +101,7 @@ def application(env, start_response):
         get_parameter = get_url[1].split('=')
         id_matches = get_parameter[1]
 
-        match_score_url_conf = MatchScoreUrlConf()
+        match_score_url_conf = MatchScoreUrlConf(YOUR_IP_ADDR)
 
         result_page = match_score_url_conf.page_formation_for_match_score(id_matches)
         return [result_page.encode('utf-8')]

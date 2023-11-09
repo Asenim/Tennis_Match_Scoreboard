@@ -46,11 +46,6 @@ class NewMatchDataInsert:
         post_data_player_2 = post_data[1]
         post_data_player_1 = self.__post_conversion_plus_is_spase(post_data_player_1)
         post_data_player_2 = self.__post_conversion_plus_is_spase(post_data_player_2)
-        # if '+' in post_data_player_1:
-        #     post_data_player_1 = post_data_player_1.replace('+', ' ')
-        # if '+' in post_data_player_2:
-        #     post_data_player_2 = post_data_player_2.replace('+', ' ')
-        # ong = OngoingMatchesService()
         print('post_data', post_data, 'player_1', post_data_player_1, 'player_2', post_data_player_2)
         # Вытаскиваем имена игроков
         # Разбиваем строку с именами игроков

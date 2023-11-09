@@ -9,7 +9,7 @@ from src.samples.match_calculation_samples import jinja2_result_page_calculation
 
 
 class MatchScoreUrlConf:
-    def __init__(self):
+    def __init__(self, ip_addr):
         """
         Класс для получения и формирование всех данных, для дальнейшего
         формирования страницы и отдачи ее пользователю
@@ -17,6 +17,7 @@ class MatchScoreUrlConf:
         self.start_class_select_matches = SelectTableMatches()
         self.start_class_select_players = SelectInteractionTablePlayers()
         self.run_class_object_to_json = ObjectToJsonToDB()
+        self.ip_address = ip_addr
 
     def page_formation_for_match_score(self, id_matches):
         """
@@ -39,7 +40,7 @@ class MatchScoreUrlConf:
         player2_obj_score = PlayerScore(player_2_object, score_player=score_player_2)
 
         result_page = jinja2_result_page_calculation.generate_result_page_calculation(
-            player1_obj_score, player2_obj_score, id_matches
+            player1_obj_score, player2_obj_score, id_matches, self.ip_address
         )
 
         return result_page
